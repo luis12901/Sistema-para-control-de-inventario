@@ -1,0 +1,132 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+#Encabezado-principal {
+  background-color: #45a049;
+  padding: 20px;
+  text-align: center;
+}
+
+#Encabezado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+
+#Encabezado-principal {
+  background-color: #4CAF50;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+#Encabezado-principal h1 {
+  color: #fff;
+  
+}
+
+
+#Encabezado button {
+  background-color: #45a049;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  margin: 0 10px 0 ;
+}
+
+#Encabezado button:hover {
+  background-color: #357d3a;
+}
+
+
+#Seleccion{
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+#formulario {
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px ;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+
+  /* Utilizamos flexbox para centrar y separar los elementos */
+}
+
+button[type="button"] {
+  background-color: #45a049;
+  color: white;
+  padding: 10px 20px ;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button[type="button"]:hover {
+  background-color: #357d3a;
+}
+
+#fuentesDisponibles,
+#multimetrosDisponibles {
+  display: none;
+}
+
+
+.button-container button:hover {
+  background-color: #357934;
+}
+
+.checkbox-group {
+  margin-bottom: 10px;
+}
+
+.checkbox-group label {
+  margin-left: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+#fuentesDisponibles,
+#multimetrosDisponibles {
+  margin-left: 25px;
+}
+
+#fuentesDisponibles label,
+#multimetrosDisponibles label {
+  display: block;
+  margin-bottom: 5px;
+}

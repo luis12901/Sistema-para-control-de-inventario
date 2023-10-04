@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de préstamo de equipos</title>
+  <link rel="stylesheet" href="style.css" media="screen">
+</head>
+<body>
+  <h1>Formulario de Préstamo de Equipos para Estudiantes</h1>
+  <form id="formulario" action="procesar.php" method="post">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" required><br>
+
+    <label for="codigo">Código de Estudiante:</label>
+    <input type="text" id="codigo" name="codigo" required><br>
+
+    <label for="equipos" style="background-color: #4CAF50; color: white;
+     font-size: 1.5em; text-align: center; padding: 10px;
+      border-radius: 5px;">Equipo a prestar:</label><br>
+
+      <label for="puntas">
+        Juego de puntas:
+        <input type="number" id="puntas" name="equipos[]" min="0">
+      </label><br>
+  
+      <label for="fuente">
+        Fuente de alimentación:
+        <input type="number" id="fuente" name="equipos[]" min="0">
+      </label><br>
+  
+      <label for="multimetro">
+        Multímetro:
+        <input type="number" id="multimetro" name="equipos[]" min="0">
+      </label><br>
+  
+
+
+    <label for="otros">
+        <input type="checkbox" id="otrosCheckbox" name="Equipos[]" value="Otros">
+        Otros:
+        <input type="text" id="otros" name="otros" disabled>
+      </label><br>
+    
+        <button type="submit">Enviar</button>
+  </form>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
