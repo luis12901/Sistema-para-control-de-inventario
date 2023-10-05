@@ -20,60 +20,85 @@ if ($conexion->connect_error) {
 
 $nombre = $_POST['nombre'];
 $codigo = $_POST['codigo'];
-$comentarios = $_POST['comm']; // Agregamos la captura de comentarios
+$comentarios = $_POST['comm'];
+$codigo_prestador = $_POST['codigo_prestador'];
 
-// Verificamos si el estudiante tiene un registro con estado "Entregado"
-$sql_check = "SELECT * FROM registromaterial WHERE codigo_est = '$codigo' AND estado = 'Entregado'";
-$result_check = $conexion->query($sql_check);
+// Consulta para verificar si el estudiante existe
+$sql = "SELECT * FROM estudiantes WHERE codigo = '$codigo'";
+$result = $conexion->query($sql);
 
-if ($result_check->num_rows > 0) {
-    echo json_encode(array("Alerta" => "Este usuario ya tiene equipo prestado y no lo ha devuelto."));
-} else {
-    // El estudiante no tiene un equipo prestado, podemos insertar el registro
+if ($result->num_rows > 0) {
+    $sql = "SELECT * FROM prestadores WHERE codigo = '$codigo_prestador'";
+    $result = $conexion->query($sql);
 
-    $equipos = '';
+    if ($result->num_rows > 0) {
 
-    if (isset($_POST['Equipos'])) {
-        foreach ($_POST['Equipos'] as $equipo) {
-            if ($equipo === 'Fuente') {
-               /* // Agregar la marca de la fuente seleccionada
-                $marca = $_POST['marca_fuente']; // Asumiendo que tienes un campo 'marca_fuente' en tu formulario
-                $equipos .= "Fuente ($marca),";*/
+        // Verificamos si el estudiante tiene un registro con estado "Entregado"
+        $sql_check = "SELECT * FROM registromaterial WHERE codigo_est = '$codigo' AND estado = 'Entregado'";
+        $result_check = $conexion->query($sql_check);
+
+        if ($result_check->num_rows > 0) {
+            echo json_encode(array("Alerta" => "Este usuario ya tiene equipo prestado y no lo ha devuelto."));
+        } else {
+            // El estudiante no tiene un equipo prestado, podemos insertar el registro
+
+            $equipos = isset($_POST['Equipos']) ? $_POST['Equipos'] : [];
+            $equiposStr = implode(',', $equipos);
+
+            // Actualizamos el estado de los equipos que comienzan con "F"
+            foreach ($equipos as $equipo) {
+                if (strpos($equipo, 'F') === 0) {
+                    $updateEquipoSQL = "UPDATE inventario SET Estado = 'Por entregar' WHERE Marca = '$equipo' AND Estado = 'Disponible' LIMIT 1";
+                    if ($conexion->query($updateEquipoSQL) !== TRUE) {
+                        echo json_encode(array("error" => "Error al actualizar el estado del equipo: " . $conexion->error));
+                        $conexion->close();
+                        return;
+                    }
+                }
+                else if (strpos($equipo, 'M') === 0) {
+                    $updateEquipoSQL = "UPDATE inventario SET Estado = 'Por entregar' WHERE Marca = '$equipo' AND Estado = 'Disponible' LIMIT 1";
+                    if ($conexion->query($updateEquipoSQL) !== TRUE) {
+                        echo json_encode(array("error" => "Error al actualizar el estado del equipo: " . $conexion->error));
+                        $conexion->close();
+                        return;
+                    }
+                }
+
+            }
+
+            // Obtener la fecha actual en formato epoch
+            $fecha_epoch = time();
+
+            $otros = isset($_POST['otros']) ? $_POST['otros'] : 'NA';
+            $estado = 'Entregado';
+            $sql_insert = "INSERT INTO registromaterial (Nombre_Est, Codigo_Est, FechayHora, equipos, otros, estado, comentarios) 
+                            VALUES ('$nombre', '$codigo', $fecha_epoch, '$equiposStr', '$otros', '$estado', '$comentarios')";
+
+            if ($conexion->query($sql_insert) === TRUE) {
+                echo json_encode(array("message" => "Datos insertados correctamente."));
+
+                if (isset($_POST['Equipos'])) {
+                    $equipos_seleccionados = explode(',', $equiposStr);
+
+                    $num_equipos = count($equipos_seleccionados);
+                    for ($i = 0; $i < $num_equipos; $i++) {
+                        $equipo = $equipos_seleccionados[$i];
+
+                        if (strpos($equipo, 'F') === 0) {
+                            $update_sql = "UPDATE inventario SET Estado = 'Por entregar' WHERE Material = '$equipo' AND Estado = 'Disponible' LIMIT 1";
+                            $conexion->query($update_sql);
+                        }
+                    }
+                }
             } else {
-                $equipos .= "$equipo,";
-            }
-        }
-        $equipos = rtrim($equipos, ','); // Eliminar la última coma
-    } else {
-        $equipos = 'NA';
-    }
-
-    // Obtener la fecha actual en formato epoch
-    $fecha_epoch = time();
-
-    $otros = isset($_POST['otros']) ? $_POST['otros'] : 'NA';
-    $estado = 'Entregado';
-    $sql_insert = "INSERT INTO registromaterial (Nombre_Est, Codigo_Est, FechayHora, equipos, otros, estado, comentarios) 
-                    VALUES ('$nombre', '$codigo', $fecha_epoch, '$equipos', '$otros', '$estado', '$comentarios')"; // Agregamos comentarios
-
-    if ($conexion->query($sql_insert) === TRUE) {
-        echo json_encode(array("message" => "Datos insertados correctamente."));
-
-        if (isset($_POST['Equipos'])) {
-            $equipos_seleccionados = explode(',', $equipos);
-
-            $num_equipos = count($equipos_seleccionados);
-            for ($i = 0; $i < $num_equipos; $i++) {
-                $equipo = $equipos_seleccionados[$i];
-
-                $update_sql = "UPDATE inventario SET Estado = 'Por entregar' WHERE Material = '$equipo' AND Estado = 'Disponible' LIMIT 1";
-                $conexion->query($update_sql);
+                echo json_encode(array("error" => "Error al insertar datos: " . $conexion->error));
             }
         }
     } else {
-        echo json_encode(array("error" => "Error al insertar datos: " . $conexion->error));
+        echo "Prestador de servicio social no encontrado.";
     }
+} else {
+    echo "La informacion del estudiante es incorrecta o no está registrado en nuestra base de datos.";
 }
-
 $conexion->close();
 ?>

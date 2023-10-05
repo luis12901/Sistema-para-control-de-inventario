@@ -7,104 +7,6 @@
 */
 
 
-function mostrarMultimetrosDisponibles(checkbox) {
-  var checked = checkbox.checked;
-
-  if (checked) {
-      var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = function () {
-          if (xhr.readyState === XMLHttpRequest.DONE) {
-              if (xhr.status === 200) {
-                  // Parsear la respuesta como JSON
-                  var marcas = JSON.parse(xhr.responseText);
-                  mostrarMarcasMultimetros(marcas);
-              } else {
-                  console.error('Hubo un error al obtener los multímetros disponibles.');
-              }
-          }
-      };
-      xhr.open('GET', 'multimetros_disponibles.php', true);
-      xhr.send();
-  } else {
-      document.getElementById('multimetrosDisponibles').innerHTML = '';
-  }
-}
-
-function mostrarMarcasMultimetros(marcas) {
-  var multimetrosDisponiblesDiv = document.getElementById('multimetrosDisponibles');
-  multimetrosDisponiblesDiv.innerHTML = '';
-
-  if (marcas.length > 0) {
-      var listaMultimetros = document.createElement('ul');
-      for (var i = 0; i < marcas.length; i++) {
-          var marca = marcas[i];
-
-          var listItem = document.createElement('li');
-          listItem.innerHTML = `
-              <label for="${marca}">
-                  <input type="checkbox" id="${marca}" name="multimetrosSeleccionados[]" value="${marca}">
-                  ${marca}
-              </label>
-          `;
-          listaMultimetros.appendChild(listItem);
-      }
-      multimetrosDisponiblesDiv.appendChild(listaMultimetros);
-  } else {
-      multimetrosDisponiblesDiv.innerHTML = 'No hay multímetros disponibles.';
-  }
-}
-
-
-
-
-function mostrarFuentesDisponibles(checkbox) {
-  var checked = checkbox.checked;
-
-  if (checked) {
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
-          // Parsear la respuesta como JSON
-          var marcas = JSON.parse(xhr.responseText);
-          mostrarMarcasFuentes(marcas);
-        } else {
-          console.error('Hubo un error al obtener las fuentes disponibles.');
-        }
-      }
-    };
-    xhr.open('GET', 'fuentes_disponibles.php', true);
-    xhr.send();
-  } else {
-    document.getElementById('fuentesDisponibles').innerHTML = '';
-  }
-}
-
-function mostrarMarcasFuentes(marcas) {
-  var fuentesDisponiblesDiv = document.getElementById('fuentesDisponibles');
-  fuentesDisponiblesDiv.innerHTML = '';
-
-  if (marcas.length > 0) {
-    var listaFuentes = document.createElement('ul');
-    for (var i = 0; i < marcas.length; i++) {
-      var marca = marcas[i];
-
-      var listItem = document.createElement('li');
-      listItem.innerHTML = `
-        <label for="${marca}">
-          <input type="checkbox" id="${marca}" name="fuentesSeleccionadas[]" value="${marca}">
-          ${marca}
-        </label>
-      `;
-      listaFuentes.appendChild(listItem);
-    }
-    fuentesDisponiblesDiv.appendChild(listaFuentes);
-  } else {
-    fuentesDisponiblesDiv.innerHTML = 'No hay fuentes disponibles.';
-  }
-}
-
-
 function buscarEstudiante() {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
@@ -127,10 +29,6 @@ function llenarCampos(nombre, codigo) {
   document.getElementById('nombre').value = nombre;
   document.getElementById('codigo').value = codigo;
 }
-
-document.getElementById('tuBoton').addEventListener('click', function() {
-  buscarEstudiante();
-});
 
 
 
@@ -161,11 +59,94 @@ function llenarCamposDelPrestador(nombre, codigo) {
 
 
 
-document.getElementById('tuBoton').addEventListener('click', function() {
-  buscarPrestador();
-});
 
 
+function mostrarFuentesDisponibles() {
+  const fuentesDiv = document.getElementById('fuentesDisponibles');
+fuentesDiv.innerHTML = '';  // Limpiamos cualquier contenido previo
+
+const xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+  if (this.readyState === 4 && this.status === 200) {
+    const marcas = JSON.parse(this.responseText);
+
+    if (marcas.length > 0) {
+
+      
+      const fuentesLabel = document.createElement('label');
+      
+      fuentesDiv.appendChild(fuentesLabel);
+
+      for (let i = 0; i < marcas.length; i++) {
+        const label = document.createElement('label');
+        label.innerText = `F(${marcas[i]})`;
+        fuentesDiv.appendChild(label);
+
+        
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.name = 'Equipos[]';  // Cambia esto según tu necesidad
+        checkbox.value = marcas[i];
+        fuentesDiv.appendChild(checkbox);
+
+        fuentesDiv.appendChild(document.createElement('br'));
+      }
+    } else {
+      const noFuentesLabel = document.createElement('label');
+      noFuentesLabel.innerText = 'No hay fuentes disponibles.';
+      fuentesDiv.appendChild(noFuentesLabel);
+    }
+  }
+};
+xhttp.open('GET', 'fuentes_disponibles.php', true);
+xhttp.send();
+
+}
+
+
+window.addEventListener('load', mostrarFuentesDisponibles);
+
+
+function mostrarMultimetrosDisponibles() {
+  const multimetrosDiv = document.getElementById('multimetrosDisponibles');
+  multimetrosDiv.innerHTML = '';  // Limpiamos cualquier contenido previo
+
+  const xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+      if (this.readyState === 4 && this.status === 200) {
+          const marcas = JSON.parse(this.responseText);
+          if (marcas.length > 0) {
+              const checkboxContainer = document.createElement('div');
+              checkboxContainer.classList.add('checkbox-container');
+
+              // Crear checkboxes para cada marca
+              marcas.forEach(marca => {
+                  const checkbox = document.createElement('input');
+                  checkbox.type = 'checkbox';
+                  checkbox.name = 'Equipos[]';
+                  checkbox.value = marca;
+                  checkboxContainer.appendChild(checkbox);
+
+                  const label = document.createElement('label');
+                  label.appendChild(document.createTextNode('M(' + marca + ')'));
+                  checkboxContainer.appendChild(label);
+
+                  checkboxContainer.appendChild(document.createElement('br')); // Agrega un salto de línea
+              });
+
+              multimetrosDiv.appendChild(checkboxContainer);
+          } else {
+              multimetrosDiv.appendChild(document.createTextNode('No hay multímetros disponibles.'));
+          }
+      }
+  };
+  xhttp.open('GET', 'multimetros_disponibles.php', true);  // Ruta correcta al script PHP
+  xhttp.send();
+}
+
+// Llama a la función para mostrar los multímetros disponibles al cargar la página
+window.addEventListener('load', mostrarMultimetrosDisponibles);
 
 
 
@@ -173,39 +154,16 @@ document.getElementById('tuBoton').addEventListener('click', function() {
 
 function enviarFormulario() {
   if (validarFormulario()) {
-   
     document.getElementById('formulario').submit();
   }
-}
-
-// Rest of the code...
-
-// Function to get selected source brands
-function obtenerMarcasFuentesSeleccionadas() {
-  const marcasFuentesSeleccionadas = [];
-  const fuentesCheckboxes = document.getElementsByName('fuentesSeleccionadas[]');
-
-  for (let i = 0; i < fuentesCheckboxes.length; i++) {
-    const checkbox = fuentesCheckboxes[i];
-
-    if (checkbox.checked) {
-      marcasFuentesSeleccionadas.push(checkbox.value);
-    }
-  }
-
-  return marcasFuentesSeleccionadas;
 }
 
 
 
 function validarFormulario() {
-
-  document.getElementById('nombre_prestador').value = nombre;
-  document.getElementById('codigo_prestador')
-
   const nombre = document.getElementById('nombre').value.trim();
   const codigo = document.getElementById('codigo').value.trim();
-  //const codigo_prestador = document.getElementById('codigo_prestador').value.trim();
+  const codigo_prestador = document.getElementById('codigo_prestador').value.trim();
   const equipos = document.getElementsByName('Equipos[]');
   const otros = document.getElementById('otros').value;
   const comentarios = document.getElementById('comm').value;
@@ -220,17 +178,29 @@ function validarFormulario() {
     return false;
   }
 
-  /*if(codigo_prestador.length !== 9 || isNaN(codigo_prestador)){
-    alert('El código del prestador debe contener 9 dígitos numéricos.');
-    return false;
-  }*/
-
   let alMenosUnEquipoSeleccionado = false;
+  let equiposFCount = 0;  // Contador para equipos que comienzan con F
+  let equiposMCount = 0;
 
   for (let i = 0; i < equipos.length; i++) {
     if (equipos[i].checked) {
       alMenosUnEquipoSeleccionado = true;
-      break;
+
+      if (equipos[i].value.startsWith('F')) {
+        equiposFCount++;
+        if (equiposFCount > 1) {
+          alert('No puedes seleccionar más de 1 fuente.');
+          return false;
+        }
+      }
+
+      if (equipos[i].value.startsWith('M')) {
+        equiposMCount++;
+        if (equiposMCount > 1) {
+          alert('No puedes seleccionar más de 1 multimetro.');
+          return false;
+        }
+      }
     }
   }
 
@@ -239,16 +209,8 @@ function validarFormulario() {
     return false;
   }
 
-  // Crear un objeto para almacenar la información
-  const data = {
-    nombre: nombre,
-    codigo: codigo,
-    equipos: equipos,
-    otros: otros,
-    comentarios: comentarios
-  };
 
-  // Aquí puedes enviar la data a través de una función o AJAX
+
 
   return true;
 }
@@ -274,3 +236,5 @@ function validarFormulario() {
 
 // Call the function to fetch data
 fetchData();
+
+

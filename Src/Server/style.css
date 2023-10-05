@@ -17,16 +17,6 @@ body {
   align-items: center;
 }
 
-
-
-
-
-#Encabezado-principal {
-  background-color: #4CAF50;
-  padding: 20px;
-  border-radius: 10px;
-}
-
 #Encabezado-principal h1 {
   color: #fff;
   
@@ -48,14 +38,6 @@ body {
 }
 
 
-#Seleccion{
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 30px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-}
 
 #formulario {
   max-width: 500px;
@@ -63,13 +45,12 @@ body {
   padding: 30px;
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
 
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start; /* Alinea los elementos a la izquierda */
 }
-
 label {
   display: block;
   margin-bottom: 5px;
@@ -98,35 +79,27 @@ button[type="button"]:hover {
   background-color: #357d3a;
 }
 
-#fuentesDisponibles,
-#multimetrosDisponibles {
-  display: none;
-}
 
 
 .button-container button:hover {
   background-color: #357934;
 }
-
 .checkbox-group {
-  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column; /* Alinea los elementos en columna */
 }
 
 .checkbox-group label {
-  margin-left: 10px;
+  margin-right: 0px; /* Cambiado de margin-left a margin-right */
 }
 
 .checkbox-group input[type="checkbox"] {
-  margin-right: 10px;
+  margin-left: 0; /* Añadido margin-left para separar las checkboxes de las etiquetas */
 }
 
-#fuentesDisponibles,
-#multimetrosDisponibles {
-  margin-left: 25px;
-}
 
-#fuentesDisponibles label,
-#multimetrosDisponibles label {
-  display: block;
-  margin-bottom: 5px;
-}
+
+
+
+
+

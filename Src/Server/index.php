@@ -28,7 +28,7 @@
 
 
   <form  id="formulario" action="procesar.php" method="post">
-  <div id="formulario" style="margin-top:30px;margin-bottom:50px;">
+  <div id="formulario" style="margin-top:30px;margin-bottom:50px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);">
 
     <img src="udg.png" alt="">
 
@@ -51,45 +51,41 @@
     <button id="buscarButton" style = "margin: 0 0 20px 0"; type="button" onclick="buscarPrestador()">Buscar Prestador</button>
 
 
-    <div id="checkbox-group">
-        <input type="checkbox" id="puntas" name="Equipos[]" value="Juego_Puntas_Osc">
-        <label for="puntas">Puntas Osc (UD. <?php echo $countPuntas; ?>)</label>
-    </div>
 
-    <div id="checkbox-group">
-        <input type="checkbox" id="fuente" name="Equipos[]" value="Fuente" onchange="mostrarFuentesDisponibles(this)">
-        <label for="fuente">Fuente (UD. <?php echo $countFuentes; ?>)</label>
-        <div id="fuentesDisponibles"></div>
-    </div>
-
-    <div id="checkbox-group">
-        <input type="checkbox" id="multimetro" name="Equipos[]" value="Multímetro" onchange="mostrarMultimetrosDisponibles(this)">
-        <label for="multimetro">Multímetro (UD. <?php echo $countMultimetros; ?>)</label>
-        <div id="multimetrosDisponibles"></div>
-    </div>
+<input type="checkbox" id="puntas" name="Equipos[]" value="Juego_Puntas_Osc">
+<h3>Juego_Puntas_Osc (UD. <?php echo $countPuntas; ?>)</h3>
 
 
 
+<h3 for="fuente">Fuentes (UD. <?php echo $countFuentes; ?>)</h3>
+    <div id="fuentesDisponibles" class="checkbox-group">
+  <input type="checkbox" id="fuente" name="Equipos[]" value="Fuente" onchange="mostrarFuentesDisponibles(this)">
+</div>
 
-    <label for="otros">Otros:</label>
-    <input type="text" id="otros" name="otros">
+
+
+<h3 for="multimetro">Multímetros (UD. <?php echo $countMultimetros; ?>)</h3>
+<div id="multimetrosDisponibles" class="checkbox-group">
+  <input type="checkbox" id="multimetro" name="Equipos[]" value="Multímetro" onchange="mostrarMultimetrosDisponibles(this)">
+</div>
 
 
 
 
+ 
 
+
+  <label for="otros">Otros:</label>
+  <input type="text" id="otros" name="otros">
 
 
   <label for="comments">Comentarios:</label>
   <input type="text" id="comm" name="comm">
  
-
-    
     <button id="buscarButton" type="button" onclick="enviarFormulario()">Enviar</button>
+ 
+ 
   </form>
-
   <script src="script.js"></script>
-
-
 </body>
 </html>

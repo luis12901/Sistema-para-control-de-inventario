@@ -76,5 +76,5 @@ if ($studentResult->num_rows > 0) {
 $stmtStudent->close();
 $conn->close();
 
-sleep(2);
+sleep(1);
 ?>

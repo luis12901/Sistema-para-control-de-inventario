@@ -5,14 +5,20 @@
     <title>Monitoreo</title>
     <style>
         table {
-  border-collapse: collapse;
+            border-collapse: collapse;
   width: 80%;
-  margin: 50px auto;
+  max-width: 200px; /* Set a max-width to limit expansion */
+  margin: 0 auto; /* Center the table */
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
 }
+
+
+
+
+
 
 table th, table td {
   border: 1px solid #ddd;
@@ -39,7 +45,8 @@ table tr:hover {
 
 @media (max-width: 768px) {
   table {
-    width: 100%;
+    width: 80%;
+   
   }
   
   table th, table td {
@@ -85,6 +92,8 @@ table tr:hover {
             margin-top: 40px;
             margin-bottom: 40px;
         }
+
+    
     </style>
 </head>
 <body>

@@ -11,19 +11,19 @@
 // INACTIVITY TIMER
   bool interaccionOcurre = false;
 //  WIFI AND SERVER
-
+ /*
   char ssid[100]     = "RFID_2.4";
   char password[100] = "3333379426";
   const char* serverIP = "http://192.168.43.197";
   char* phpDirectory = "http://192.168.43.197/Laboratorio/consulta_estudiante.php";
+*/
 
- /*
   char ssid[100]     = "Casa_Murillo_Salas_2.4Gnormal";
   char password[100] = "Guadalajara129#";
-  const char* serverIP = "http://192.168.100.248";
-  char* phpDirectory = "http://192.168.100.248/Laboratorio/consulta_estudiante.php";
+  const char* serverIP = "http://192.168.100.146";
+  char* phpDirectory = "http://192.168.100.146/Laboratorio/consulta_estudiante.php";
 
-*//*
+/*
   char ssid[100]     = "UDGMovil1";
   char password[100] = "";
   const char* serverIP = "http://10.214.190.233";

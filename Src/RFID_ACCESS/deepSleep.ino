@@ -6,7 +6,7 @@ void inactivityTimer(){
         static unsigned long startTime = millis();
         unsigned long elapsedTime = millis() - startTime;
 
-        if (elapsedTime >= 15* 60 * 1000UL) {   // 1 minute of inactivity will make true this condition
+        if (elapsedTime >= 30 * 60 * 1000UL) {   // 1 minute of inactivity will make true this condition
           
           Serial.println();
           Serial.println("      Entering deep sleep mode ......");
