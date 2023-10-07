@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Monitoreo</title>
+    <title>Registro de inventario</title>
     <style>
         table {
             border-collapse: collapse;
@@ -100,13 +100,17 @@ table tr:hover {
 
 <div style="background-color: #4CAF50; padding: 20px; text-align: center; border-radius: 10px;">
     <div class="titulo-y-botones">
-        <h1 style="color: #fff;">Registros</h1>
+        <h1 style="color: #fff;">Registro de inventario prestado</h1>
         <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px;
          cursor: pointer; margin: 0 10px; <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none;
           border-radius: 20px; cursor: pointer; margin: 0 10px; onclick="window.location.href='index.php'">Prestar Material</button>
-        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;">Ver Registros</button>
-        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;">Alta Usuarios</button>
         
+        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px;
+         cursor: pointer; margin: 0 10px; <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none;
+          border-radius: 20px; cursor: pointer; margin: 0 10px; onclick="window.location.href='alta_estudiantes.php'">Alta Usuarios</button>
+          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='alta_inventario.php'">Alta Inventario</button>
+          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='usuarios_registrados.php'">Usuarios Registrados</button>
+
     </div>
     <form style = "padding: 10px 0 0 0;" method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <input type="text" name="nombre_usuario" placeholder="Buscar usuario...">

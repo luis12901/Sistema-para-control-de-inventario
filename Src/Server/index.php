@@ -10,12 +10,16 @@
 <body>
 
 
-<div id="Encabezado-principal">
+
+<div style="background-color: #4CAF50; padding: 20px; text-align: center; border-radius: 10px;">
   <h1 style="color: #fff;">Formulario de préstamo de equipos</h1>
-    <div id="Encabezado">
+    <div>
         <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='registros.php'">Ver Registros</button>
-        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;">Alta Usuarios</button>
-        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='index.php'">Prestar Material</button>
+        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px;
+         cursor: pointer; margin: 0 10px; <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none;
+          border-radius: 20px; cursor: pointer; margin: 0 10px; onclick="window.location.href='alta_estudiantes.php'">Alta Usuarios</button>
+          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='alta_inventario.php'">Alta Inventario</button>
+
     </div>
 </div>
 
