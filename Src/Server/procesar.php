@@ -21,6 +21,7 @@ if ($conexion->connect_error) {
 $nombre = $_POST['nombre'];
 $codigo = $_POST['codigo'];
 $comentarios = $_POST['comm'];
+$nombre_prestador = $_POST['nombre_prestador'];
 $codigo_prestador = $_POST['codigo_prestador'];
 
 // Consulta para verificar si el estudiante existe
@@ -71,8 +72,8 @@ if ($result->num_rows > 0) {
 
             $otros = isset($_POST['otros']) ? $_POST['otros'] : 'NA';
             $estado = 'Entregado';
-            $sql_insert = "INSERT INTO registromaterial (Nombre_Est, Codigo_Est, FechayHora, equipos, otros, estado, comentarios) 
-                            VALUES ('$nombre', '$codigo', $fecha_epoch, '$equiposStr', '$otros', '$estado', '$comentarios')";
+            $sql_insert = "INSERT INTO registromaterial (Nombre_Est, Codigo_Est, Nombre_Prest, Codigo_Prest, FechayHora, equipos, otros, estado, comentarios) 
+                            VALUES ('$nombre', '$codigo','$nombre_prestador' , '$codigo_prestador', $fecha_epoch, '$equiposStr', '$otros', '$estado', '$comentarios')";
 
             if ($conexion->query($sql_insert) === TRUE) {
                 echo json_encode(array("message" => "Datos insertados correctamente."));

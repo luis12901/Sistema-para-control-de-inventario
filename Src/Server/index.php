@@ -19,6 +19,7 @@
          cursor: pointer; margin: 0 10px; <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none;
           border-radius: 20px; cursor: pointer; margin: 0 10px; onclick="window.location.href='alta_estudiantes.php'">Alta Usuarios</button>
           <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='alta_inventario.php'">Alta Inventario</button>
+          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='usuarios_registrados.php'">Usuarios Registrados</button>
 
     </div>
 </div>
@@ -39,16 +40,13 @@
   </div>
     <label for="nombre">Nombre del Estudiante: (Nombre y Apellidos)</label>
     <input type="text" id="nombre" name="nombre" required><br>
-
     <label for="codigo">Código del Estudiante:</label>
     <input type="text" id="codigo" name="codigo" required><br>
-
 
     <button id="buscarButton" type="button" onclick="buscarEstudiante()">Buscar Estudiante</button>
 
     <label for="nombre" style ="margin: 20px 0 10px 0;">Nombre del Prestador: (Nombre y Apellidos)</label>
     <input type="text" id="nombre_prestador" name="nombre_prestador" required><br>
-
     <label for="codigo" style ="margin: 10px 0 10px 0;">Código del Prestador:</label>
     <input type="text" id="codigo_prestador" name="codigo_prestador" required><br>
 

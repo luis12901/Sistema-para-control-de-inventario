@@ -50,8 +50,10 @@ table tr:hover {
   }
   
   table th, table td {
-    padding: 8px;
-  }
+            border: 1px solid #ddd;
+            padding: 12px;
+            cursor: pointer;
+        }
 }
 
         .barra-superior {
@@ -86,41 +88,36 @@ table tr:hover {
             border-radius: 4px;
             cursor: pointer;
         }
-        .centered {    
-            width: 50%; /* ancho fijo */
+
+
+        .table-container {
+            padding: 30px;
+            width: 80%;
             margin: 0 auto;
-            margin-top: 40px;
-            margin-bottom: 40px;
+            text-align: center;
         }
 
     
     </style>
 </head>
 <body>
-
 <div style="background-color: #4CAF50; padding: 20px; text-align: center; border-radius: 10px;">
     <div class="titulo-y-botones">
         <h1 style="color: #fff;">Registro de inventario prestado</h1>
-        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px;
-         cursor: pointer; margin: 0 10px; <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none;
-          border-radius: 20px; cursor: pointer; margin: 0 10px; onclick="window.location.href='index.php'">Prestar Material</button>
-        
-        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px;
-         cursor: pointer; margin: 0 10px; <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none;
-          border-radius: 20px; cursor: pointer; margin: 0 10px; onclick="window.location.href='alta_estudiantes.php'">Alta Usuarios</button>
-          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='alta_inventario.php'">Alta Inventario</button>
-          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='usuarios_registrados.php'">Usuarios Registrados</button>
+        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='index.php'">Prestar Material</button>
 
+        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='alta_estudiantes.php'">Alta Usuarios</button>
+        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='alta_inventario.php'">Alta Inventario</button>
+        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='usuarios_registrados.php'">Usuarios Registrados</button>
     </div>
-    <form style = "padding: 10px 0 0 0;" method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+    <form style="padding: 10px 0 0 0;" method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <input type="text" name="nombre_usuario" placeholder="Buscar usuario...">
         <button type="submit">Buscar</button>
     </form>
 </div>
 
 
-
-<div class="centered">
+<div class="table-container">
 <?php
 /*
    Project: Laboratory Equipment Inventory Management
@@ -144,23 +141,34 @@ if ($conexion->connect_error) {
 $nombre_usuario = isset($_GET['nombre_usuario']) ? $_GET['nombre_usuario'] : '';
 
 // Construir consulta SQL
-$sql = "SELECT ID, Nombre_Est, Codigo_Est, Equipos, Otros, FechayHora, Estado, Comentarios FROM registromaterial";
+$sql = "SELECT ID, Nombre_Est, Codigo_Est, Nombre_Prest, Codigo_Prest,Equipos, Otros, FechayHora, Estado, Comentarios FROM registromaterial";
 if ($nombre_usuario !== '') {
     $sql .= " WHERE Nombre_Est LIKE '%$nombre_usuario%' OR Codigo_Est LIKE '%$nombre_usuario%'";
 }
 
 $result = $conexion->query($sql);
-
-// Verificar si se obtuvieron resultados
-if ($result->num_rows > 0) {
+ // Verificar si se obtuvieron resultados
+ if ($result->num_rows > 0) {
     echo "<table>";
-    echo "<tr><th>ID</th><th>Nombre Estudiante</th><th>Código Estudiante</th><th>Equipos</th><th>Otros</th><th>Fecha y Hora</th><th>Estado</th><th>Comentarios</th></tr>";
+    echo "<tr><th>ID</th><th>Nombre Estudiante</th><th>Código Estudiante</th><th>Nombre Prestador</th><th>Código Prestador</th><th>Equipos</th><th>Otros</th><th>Fecha y Hora</th><th>Estado</th><th>Comentarios</th><th>Actualizar</th></tr>";
     // Imprimir datos de cada fila
     while ($row = $result->fetch_assoc()) {
         // Convertir epoch a formato legible con corrección de zona horaria (GMT-6)
         $fechaHoraLegible = date('Y-m-d H:i:s', $row["FechayHora"] - 21600);
 
-        echo "<tr><td>" . $row["ID"] . "</td><td>" . $row["Nombre_Est"] . "</td><td>" . $row["Codigo_Est"] . "</td><td>" . $row["Equipos"] . "</td><td>" . $row["Otros"] . "</td><td>" . $fechaHoraLegible . "</td><td>" . $row["Estado"] . "</td><td>" . $row["Comentarios"] . "</td></tr>";
+        echo "<tr>";
+        echo "<td>" . $row["ID"] . "</td>";
+        echo "<td>" . $row["Nombre_Est"] . "</td>";
+        echo "<td>" . $row["Codigo_Est"] . "</td>";
+        echo "<td>" . $row["Nombre_Prest"] . "</td>";
+        echo "<td>" . $row["Codigo_Prest"] . "</td>";
+        echo "<td contenteditable='true' id='equipos-" . $row['ID'] . "'>" . $row["Equipos"] . "</td>";
+        echo "<td contenteditable='true' id='otros-" . $row['ID'] . "'>" . $row["Otros"] . "</td>";
+        echo "<td>" . $fechaHoraLegible . "</td>";
+        echo "<td>" . $row["Estado"] . "</td>";
+        echo "<td contenteditable='true' id='comentarios-" . $row['ID'] . "'>" . $row["Comentarios"] . "</td>";
+        echo "<td><button onclick='updateCampos(" . $row['ID'] . ")'>Actualizar Campos</button></td>";
+        echo "</tr>";
     }
     echo "</table>";
 } else {
@@ -175,6 +183,31 @@ $conexion->close();
 
 
 </div>
+
+<script>
+    function updateCampos(id) {
+        const updatedOtros = document.getElementById(`otros-${id}`).innerText;
+        const updatedEquipos = document.getElementById(`equipos-${id}`).innerText;
+        const updatedComentarios = document.getElementById(`comentarios-${id}`).innerText;
+
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    console.log('Campos actualizados correctamente.');
+                } else {
+                    console.error('Error al actualizar campos.');
+                }
+            }
+        };
+
+        xhr.open("POST", "actualizar_campos.php", true);  // Reemplaza "actualizar_campos.php" con la URL correcta para actualizar en tu servidor
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send(`id=${id}&otros=${encodeURIComponent(updatedOtros)}&equipos=${encodeURIComponent(updatedEquipos)}&comentarios=${encodeURIComponent(updatedComentarios)}`);
+    }
+</script>
+
+
 
 </body>
 </html>

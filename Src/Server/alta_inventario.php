@@ -1,94 +1,87 @@
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "laboratorio";
-
-$conexion = new mysqli($servername, $username, $password, $dbname);
-
-if ($conexion->connect_error) {
-    die("Error en la conexión a la base de datos: " . $conexion->connect_error);
-}
-
-// Lógica para mostrar últimos 30 estudiantes
-if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['mostrar_ultimos'])) {
-    $query = "SELECT * FROM estudiantes ORDER BY id DESC LIMIT 30";
-
-    $result = $conexion->query($query);
-
-    if ($result->num_rows > 0) {
-        echo "<h2>Últimos 30 estudiantes registrados:</h2>";
-        echo "<div class='table-container'>";
-        echo "<table>";
-        echo "<tr><th>Nombre</th><th>Código</th><th>Serial Number</th></tr>";
-        while ($row = $result->fetch_assoc()) {
-            echo "<tr><td>" . $row["nombre"] . "</td><td>" . $row["codigo"] . "</td><td>" . $row["serialNumber"] . "</td></tr>";
-        }
-        echo "</table>";
-        echo "</div>";
-    } else {
-        echo "<p>No hay estudiantes registrados.</p>";
-    }
-}
-
-$conexion->close();
-?>
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Mostrar Estudiantes</title>
+    <title>Alta de Inventario</title>
     <style>
-        /* Estilos de la tabla y otros estilos... */
-        .table-container {
-            max-width: 800px;
-            margin: 20px auto;
+         .cuerpo {
+  font-family: Arial, sans-serif;
+    max-width: 500px;
+  margin: 20px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; 
+}
+
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-top: 40px;
-            overflow-x: auto;
         }
 
-        table {
+        .form-container input {
             width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        th, td {
-            border: 1px solid #ccc;
             padding: 10px;
-            text-align: left;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
-        th {
-            background-color: #f2f2f2;
+        .form-container button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
         }
     </style>
 </head>
+
+
 
 <body>
 
 <div style="background-color: #4CAF50; padding: 20px; text-align: center; border-radius: 10px;">
     <div class="titulo-y-botones">
-        <h1 style="color: #fff;">Registro de inventario prestado</h1>
+        <h1 style="color: #fff;">Alta de Inventario</h1>
         
-        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none;
-          border-radius: 20px; cursor: pointer;" onclick="window.location.href='index.php'">Prestar Material</button>
-        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='registros.php'">Ver Registros</button>
-        
-        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none;
-          border-radius: 20px; cursor: pointer;" onclick="window.location.href='alta_estudiantes.php'">Alta Usuarios</button>
+          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='index.php'">Prestar Material</button>
+          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='registros.php'">Ver Registros</button>
+          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='usuarios_registrados.php'">Usuarios Registrados</button>
+          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px;
+         cursor: pointer; margin: 0 10px; <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none;
+          border-radius: 20px; cursor: pointer; margin: 0 10px; onclick="window.location.href='alta_estudiantes.php'">Alta Usuarios</button>
     </div>
 
 </div>
 
 <div class="cuerpo">
-<div class="centered">
 
+<div class="form-container">
+        <h2>Ingresa la informacion del equipo</h2>
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <label for="material">Equipo o Material:</label>
+            <input type="text" id="material" name="material" required>
+
+            <label for="marca">Marca:</label>
+            <input type="text" id="marca" name="marca" required>
+
+            <button type="submit">Guardar</button>
+        </form>
+    </div>
+
+
+</div>
 <?php
 $servername = "localhost";
 $username = "root";
@@ -101,30 +94,24 @@ if ($conexion->connect_error) {
     die("Error en la conexión a la base de datos: " . $conexion->connect_error);
 }
 
-if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['mostrar_ultimos'])) {
-    $query = "SELECT * FROM estudiantes ORDER BY id DESC LIMIT 30";
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Verificar qué formulario se envió y obtener los datos correspondientes
+    if (isset($_POST['material'])) {
+        $nombre = $_POST['material'];
+        $marca = $_POST['marca'];
+        $estado = 'Disponible';
 
-    $result = $conexion->query($query);
-
-    if ($result->num_rows > 0) {
-        echo "<h2>Últimos 30 estudiantes registrados:</h2>";
-        echo "<div class='table-container'>";
-        echo "<table>";
-        echo "<tr><th>Nombre</th><th>Código</th><th>Serial Number</th></tr>";
-        while ($row = $result->fetch_assoc()) {
-            echo "<tr><td>" . $row["nombre"] . "</td><td>" . $row["codigo"] . "</td><td>" . $row["serialNumber"] . "</td></tr>";
+        $sql_insert = "INSERT INTO inventario (material, marca, estado) VALUES ('$nombre', '$marca', '$estado')";
+        if ($conexion->query($sql_insert) === TRUE) {
+            echo "<script>alert('Datos insertados correctamente.')</script>";
+        } else {
+            echo "<script>alert('Error al insertar datos: " . $conexion->error . "')</script>";
         }
-        echo "</table>";
-        echo "</div>";
-    } else {
-        echo "<p>No hay estudiantes registrados.</p>";
     }
 }
 
 $conexion->close();
 ?>
-
-</div>
 
 </body>
 </html>
