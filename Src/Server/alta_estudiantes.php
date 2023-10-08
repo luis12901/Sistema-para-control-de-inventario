@@ -153,9 +153,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $sql_insert_maestro = "INSERT INTO maestros (nombre, codigo, serialNumber) VALUES ('$nombre_maestro', '$codigo_maestro', '$serial_maestro')";
         if ($conexion->query($sql_insert_maestro) === TRUE) {
-            echo "Datos de maestro insertados correctamente.";
+            echo "<script>alert('Datos del profesor insertados correctamente.')</script>";
         } else {
-            echo "Error al insertar datos del maestro: " . $conexion->error;
+            echo "<script>alert('Error al insertar datos: " . $conexion->error . "')</script>";
         }
     }
 
@@ -166,9 +166,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $sql_insert_prestador = "INSERT INTO prestadores (nombre, codigo, serialNumber) VALUES ('$nombre_prestador', '$codigo_prestador', '$serial_prestador')";
         if ($conexion->query($sql_insert_prestador) === TRUE) {
-            echo "Datos de prestador insertados correctamente.";
+            echo "<script>alert('Datos del prestador insertados correctamente.')</script>";
         } else {
-            echo "Error al insertar datos del prestador: " . $conexion->error;
+            echo "<script>alert('Error al insertar datos: " . $conexion->error . "')</script>";
         }
     }
 }
