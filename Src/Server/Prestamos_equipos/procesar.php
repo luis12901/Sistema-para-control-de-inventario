@@ -25,11 +25,11 @@ $nombre_prestador = $_POST['nombre_prestador'];
 $codigo_prestador = $_POST['codigo_prestador'];
 
 // Consulta para verificar si el estudiante existe
-$sql = "SELECT * FROM estudiantes WHERE codigo = '$codigo'";
+$sql = "SELECT * FROM usuarios WHERE codigo = '$codigo'";
 $result = $conexion->query($sql);
 
 if ($result->num_rows > 0) {
-    $sql = "SELECT * FROM prestadores WHERE codigo = '$codigo_prestador'";
+    $sql = "SELECT * FROM usuarios WHERE codigo = '$codigo_prestador'";
     $result = $conexion->query($sql);
 
     if ($result->num_rows > 0) {
@@ -58,6 +58,14 @@ if ($result->num_rows > 0) {
                 }
                 else if (strpos($equipo, 'M') === 0) {
                     $updateEquipoSQL = "UPDATE inventario SET Estado = 'Por entregar' WHERE Marca = '$equipo' AND Estado = 'Disponible' LIMIT 1";
+                    if ($conexion->query($updateEquipoSQL) !== TRUE) {
+                        echo json_encode(array("error" => "Error al actualizar el estado del equipo: " . $conexion->error));
+                        $conexion->close();
+                        return;
+                    }
+                }
+                else if($equipo === 'Juego_Puntas_Osc'){
+                    $updateEquipoSQL = "UPDATE inventario SET Estado = 'Por entregar' WHERE Material = 'Juego_Puntas_Osc' AND Estado = 'Disponible' LIMIT 1";
                     if ($conexion->query($updateEquipoSQL) !== TRUE) {
                         echo json_encode(array("error" => "Error al actualizar el estado del equipo: " . $conexion->error));
                         $conexion->close();

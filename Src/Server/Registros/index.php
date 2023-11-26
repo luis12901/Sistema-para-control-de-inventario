@@ -104,12 +104,17 @@ table tr:hover {
 <div style="background-color: #4CAF50; padding: 20px; text-align: center; border-radius: 10px;">
     <div class="titulo-y-botones">
         <h1 style="color: #fff;">Registro de inventario prestado</h1>
-        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='index.php'">Prestar Material</button>
+        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='../Prestamos_equipos/index.php'">Prestar Material</button>
 
-        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='alta_estudiantes.php'">Alta Usuarios</button>
-        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='alta_inventario.php'">Alta Inventario</button>
-        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='usuarios_registrados.php'">Usuarios Registrados</button>
+        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='../Alta_usuarios/index.php'">Alta Usuarios</button>
+        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='../Alta_inventario/index.php'">Alta Inventario</button>
+        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='../Usuarios_registrados/index.php'">Usuarios Registrados</button>
     </div>
+    <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" class="boton" onclick="window.location.href='exportar_excel.php'">Exportar Excel</button>
+
+
+
+
     <form style="padding: 10px 0 0 0;" method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <input type="text" name="nombre_usuario" placeholder="Buscar usuario...">
         <button type="submit">Buscar</button>
@@ -184,30 +189,9 @@ $conexion->close();
 
 </div>
 
-<script>
-    function updateCampos(id) {
-        const updatedOtros = document.getElementById(`otros-${id}`).innerText;
-        const updatedEquipos = document.getElementById(`equipos-${id}`).innerText;
-        const updatedComentarios = document.getElementById(`comentarios-${id}`).innerText;
-
-        const xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
-                    console.log('Campos actualizados correctamente.');
-                } else {
-                    console.error('Error al actualizar campos.');
-                }
-            }
-        };
-
-        xhr.open("POST", "actualizar_campos.php", true);  // Reemplaza "actualizar_campos.php" con la URL correcta para actualizar en tu servidor
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhr.send(`id=${id}&otros=${encodeURIComponent(updatedOtros)}&equipos=${encodeURIComponent(updatedEquipos)}&comentarios=${encodeURIComponent(updatedComentarios)}`);
-    }
-</script>
 
 
+<script src="../js/script.js"></script>
 
 </body>
 </html>

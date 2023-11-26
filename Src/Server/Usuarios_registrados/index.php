@@ -66,13 +66,13 @@
 <div style="background-color: #4CAF50; padding: 20px; text-align: center; border-radius: 10px;">
   <h1 style="color: #fff;">Usuarios Registrados</h1>
     <div>
-    <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='index.php'">Prestar Material</button>
+    <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='../Prestamos_equipos/index.php'">Prestar Material</button>
 
-        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='registros.php'">Ver Registros</button>
+        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Registros/index.php'">Ver Registros</button>
         <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px;
          cursor: pointer; margin: 0 10px; <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none;
-          border-radius: 20px; cursor: pointer; margin: 0 10px; onclick="window.location.href='alta_estudiantes.php'">Alta Usuarios</button>
-          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='alta_inventario.php'">Alta Inventario</button>
+          border-radius: 20px; cursor: pointer; margin: 0 10px; onclick="window.location.href='../Alta_usuarios/index.php'">Alta Usuarios</button>
+          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Alta_inventario/index.php'">Alta Inventario</button>
 
     </div>
 </div>
@@ -90,7 +90,7 @@
 
 <br>
 
-<a href="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>?mostrar_ultimos=true">Mostrar últimos 30 estudiantes</a>
+<a href="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>?mostrar_ultimos=true">Mostrar últimos 50 estudiantes registrados</a>
 <?php
 $servername = "localhost";
 $username = "root";
@@ -106,7 +106,7 @@ if ($conexion->connect_error) {
 // Lógica para buscar por código
 if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['codigo'])) {
     $codigo = $_GET['codigo'];
-    $query = "SELECT * FROM estudiantes WHERE codigo = '$codigo'";
+    $query = "SELECT * FROM usuarios WHERE codigo = '$codigo'";
 
     $result = $conexion->query($query);
 
@@ -125,16 +125,16 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['codigo'])) {
 
 // Lógica para mostrar últimos 30 estudiantes
 if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['mostrar_ultimos'])) {
-    $query = "SELECT * FROM estudiantes ORDER BY id DESC LIMIT 30";
+    $query = "SELECT * FROM usuarios ORDER BY id DESC LIMIT 50";
 
     $result = $conexion->query($query);
 
     if ($result->num_rows > 0) {
         echo "<h2>Últimos 30 estudiantes registrados:</h2>";
         echo "<table>";
-        echo "<tr><th>Nombre</th><th>Código</th><th>Serial Number</th></tr>";
+        echo "<tr><th>Nombre</th><th>Código</th><th>Serial Number</th><th>Tipo de usuario</th></tr>";
         while ($row = $result->fetch_assoc()) {
-            echo "<tr><td>" . $row["Nombre"] . "</td><td>" . $row["Codigo"] . "</td><td>" . $row["serialNumber"] . "</td></tr>";
+            echo "<tr><td>" . $row["Nombre"] . "</td><td>" . $row["Codigo"] . "</td><td>" . $row["serialNumber"] . "</td><td>" . $row["Tipo_Usuario"] . "</td></tr>";
         }
         echo "</table>";
     } else {

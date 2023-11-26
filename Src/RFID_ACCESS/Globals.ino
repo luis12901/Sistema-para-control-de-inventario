@@ -21,7 +21,7 @@
   char ssid[100]     = "Casa_Murillo_Salas_2.4Gnormal";
   char password[100] = "Guadalajara129#";
   const char* serverIP = "http://192.168.100.146";
-  char* phpDirectory = "http://192.168.100.146/Laboratorio/consulta_estudiante.php";
+  char* phpDirectory = "http://192.168.100.146/Laboratorio/busqueda_usuario.php";
 
 /*
   char ssid[100]     = "UDGMovil1";

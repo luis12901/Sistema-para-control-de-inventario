@@ -1,4 +1,0 @@
-prestamo de equipo
-alta usuarios
-registros de material
-alta inventario

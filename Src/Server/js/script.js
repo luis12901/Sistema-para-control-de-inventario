@@ -7,6 +7,45 @@
 */
 
 
+function updateCampos(id) {
+  const updatedOtros = document.getElementById(`otros-${id}`).innerText;
+  const updatedEquipos = document.getElementById(`equipos-${id}`).innerText;
+  const updatedComentarios = document.getElementById(`comentarios-${id}`).innerText;
+
+  const xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4) {
+          if (xhr.status == 200) {
+              console.log('Campos actualizados correctamente.');
+          } else {
+              console.error('Error al actualizar campos.');
+          }
+      }
+  };
+
+  xhr.open("POST", "actualizar_campos.php", true);  // Reemplaza "actualizar_campos.php" con la URL correcta para actualizar en tu servidor
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.send(`id=${id}&otros=${encodeURIComponent(updatedOtros)}&equipos=${encodeURIComponent(updatedEquipos)}&comentarios=${encodeURIComponent(updatedComentarios)}`);
+}
+
+
+function exportarExcel() {
+  const xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4) {
+          if (xhr.status == 200) {
+              alert('El archivo de Excel se ha creado exitosamente.');
+          } else {
+              alert('No se logró crear el archivo de Excel. Puede deberse a un problema de permisos en la carpeta.');
+          }
+      }
+  };
+
+  xhr.open("GET", "exportar_excel.php", true);  
+  xhr.send();
+}
+
+
 function buscarEstudiante() {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {

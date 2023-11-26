@@ -56,10 +56,10 @@
         <h1 style="color: #fff;">Alta de Usuarios</h1>
         <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px;
          cursor: pointer; margin: 0 10px; <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none;
-          border-radius: 20px; cursor: pointer; margin: 0 10px; onclick="window.location.href='index.php'">Prestar Material</button>
-          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='registros.php'">Ver Registros</button>
-          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='alta_inventario.php'">Alta Inventario</button>
-          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='usuarios_registrados.php'">Usuarios Registrados</button>
+          border-radius: 20px; cursor: pointer; margin: 0 10px; onclick="window.location.href='../Prestamos_equipos/index.php'">Prestar Material</button>
+          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Registros/index.php'">Ver Registros</button>
+          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Alta_inventario/index.php'">Alta Inventario</button>
+          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Usuarios_registrados/index.php'">Usuarios Registrados</button>
 
     </div>
 
@@ -137,8 +137,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $nombre = $_POST['nombre'];
         $codigo = $_POST['codigo'];
         $serial = $_POST['serial'];
+        $user_hierarchy = 'Estudiante';
 
-        $sql_insert = "INSERT INTO estudiantes (nombre, codigo, serialNumber) VALUES ('$nombre', '$codigo', '$serial')";
+        $sql_insert = "INSERT INTO usuarios (nombre, codigo, serialNumber, Tipo_Usuario) VALUES ('$nombre', '$codigo', '$serial', '$user_hierarchy')";
         if ($conexion->query($sql_insert) === TRUE) {
             echo "<script>alert('Datos del estudiante insertados correctamente.')</script>";
         } else {
@@ -150,8 +151,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $nombre_maestro = $_POST['nombre_maestro'];
         $codigo_maestro = $_POST['codigo_maestro'];
         $serial_maestro = $_POST['serial_maestro'];
+        $user_hierarchy = 'Maestro';
 
-        $sql_insert_maestro = "INSERT INTO maestros (nombre, codigo, serialNumber) VALUES ('$nombre_maestro', '$codigo_maestro', '$serial_maestro')";
+        $sql_insert_maestro = "INSERT INTO usuarios (nombre, codigo, serialNumber, Tipo_Usuario) VALUES ('$nombre_maestro', '$codigo_maestro', '$serial_maestro', '$user_hierarchy')";
         if ($conexion->query($sql_insert_maestro) === TRUE) {
             echo "<script>alert('Datos del profesor insertados correctamente.')</script>";
         } else {
@@ -163,8 +165,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $nombre_prestador = $_POST['nombre_prestador'];
         $codigo_prestador = $_POST['codigo_prestador'];
         $serial_prestador = $_POST['serial_prestador'];
+        $user_hierarchy = 'Prestador SS';
 
-        $sql_insert_prestador = "INSERT INTO prestadores (nombre, codigo, serialNumber) VALUES ('$nombre_prestador', '$codigo_prestador', '$serial_prestador')";
+        $sql_insert_prestador = "INSERT INTO usuarios (nombre, codigo, serialNumber, Tipo_Usuario) VALUES ('$nombre_prestador', '$codigo_prestador', '$serial_prestador', '$user_hierarchy')";
         if ($conexion->query($sql_insert_prestador) === TRUE) {
             echo "<script>alert('Datos del prestador insertados correctamente.')</script>";
         } else {

@@ -18,7 +18,7 @@ if ($conn->connect_error) {
 
 $serialNumber = $data['serialNumber'];
 
-$studentQuery = "SELECT nombre, codigo FROM estudiantes WHERE serialNumber = ?";
+$studentQuery = "SELECT nombre, codigo FROM usuarios WHERE serialNumber = ?";
 $stmtStudent = $conn->prepare($studentQuery);
 $stmtStudent->bind_param("s", $serialNumber);
 
@@ -42,36 +42,7 @@ if ($studentResult->num_rows > 0) {
     }
 
     $stmtInsert->close();
-} else {
-   
-
-    $studentQuery = "SELECT nombre, codigo FROM prestadores WHERE serialNumber = ?";
-    $stmtStudent = $conn->prepare($studentQuery);
-    $stmtStudent->bind_param("s", $serialNumber);
-
-    $stmtStudent->execute();
-    $studentResult = $stmtStudent->get_result();
-
-    if ($studentResult->num_rows > 0) {
-        $studentRow = $studentResult->fetch_assoc();
-        $studentName = $studentRow["nombre"];
-        $studentCode = $studentRow["codigo"];
-    
-        // Insert into 'formulario' table
-        $insertQuery = "INSERT INTO formulario (nombre, codigo, estado) VALUES (?, ?, 'Disponible')";
-        $stmtInsert = $conn->prepare($insertQuery);
-        $stmtInsert->bind_param("ss", $studentName, $studentCode);
-        
-        if ($stmtInsert->execute()) {
-            echo "Nuevo registro insertado en formulario.";
-        } else {
-            echo "Error al insertar el nuevo registro: " . $conn->error;
-        }
-    
-        $stmtInsert->close();
-    }
-
-}
+} 
 
 $stmtStudent->close();
 $conn->close();
