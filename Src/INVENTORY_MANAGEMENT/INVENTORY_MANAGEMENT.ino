@@ -23,6 +23,7 @@
   #include <HTTPClient.h>
   #include <WiFiClient.h>
   #include <ESPmDNS.h>
+  #define LIMIT_SWT_PIN 33
 
 
 // prototypeFunctions();   // Use it only if the code doesn't compile for some missing prototype functions within the other ino files 
@@ -38,9 +39,9 @@ void setup() {
 void loop() {
 
     inactivityTimer();
-    
+    //pirTimer();
     if(onlineVerification()){
-
+        
         online(); 
   
     }

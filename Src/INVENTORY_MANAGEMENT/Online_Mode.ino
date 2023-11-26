@@ -12,13 +12,15 @@
 
 void online(){
 
-  unsigned long startTime = 0;
-
+  starOfLoop = 0;
+  printCentered(0,"Coloque su");
+  printCentered(1,"tarjeta");
   while(true){
 
-      if (startTime == 0) {
 
-            startTime = millis();
+      if (starOfLoop == 0) {
+
+            starOfLoop = millis();
 
       }
 
@@ -27,25 +29,37 @@ void online(){
       
 
       if(serialNumber.length() > 0){
+        interaccionOcurre = true;
+          inactivityTimer();
 
             postJSONToServer();
             getJSONFromServer();
+            
+            interaccionOcurre = true;
+            inactivityTimer();
             break;
-
       }
 
       unsigned long currentTime = millis();
 
-      if (currentTime - startTime > 60000) {break;}
+      if (currentTime - startTime > 30000) {break;}
 
   }
+  
+  }
+  
 
-}
+  
+
+
 bool onlineVerification(){
 
       if(ServerConnected()){
         
         Serial.println("Connected Successfully");
+        digitalWrite(CONNECTED, 1);
+        digitalWrite(DISCONNECTED, 0);
+        digitalWrite(CARD_DETECTED, 0);
         return true;
 
       }
@@ -59,14 +73,21 @@ bool onlineVerification(){
 void getRFIDData(){
 
   if (mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial()) {
+        digitalWrite(CONNECTED, 0); 
+        digitalWrite(DISCONNECTED, 0);
+        digitalWrite(CARD_DETECTED, 1);
+
 
       digitalWrite(BUZZER_PIN, HIGH);
       delay(200);
       digitalWrite(BUZZER_PIN, LOW);
-      
 
+      // confirmamos los avances que no se puedan inter
       Serial.println("Card Detected!");
       Serial.println("Please Wait .........");
+      
+      printCentered(0,"Espere ");
+      printCentered(1,"Porfavor .....");
 
       
       for (int i = 0; i < 4; i++) {
@@ -102,6 +123,13 @@ void postJSONToServer(){
       char completedJsonMessage[150];
       jsonMessage.toCharArray(completedJsonMessage, 150);
       conexionURL(counter, completedJsonMessage, phpDirectory, false);
+
+
+delay(2000);
+      digitalWrite(CONNECTED, 1);
+        digitalWrite(DISCONNECTED, 0);
+        digitalWrite(CARD_DETECTED, 0);
+        
 
 }
 void getJSONFromServer(){
@@ -181,11 +209,11 @@ void getJSONFromServer(){
 
           }
 
-          // JSOP Message recieved
+          // JSON Message recieved
           tiempoComparacion = xTaskGetTickCount();
-          if (tiempoComparacion > (tiempoConexionInicio + 3000)) {
+          if (tiempoComparacion > (tiempoConexionInicio + 1000)) {
 
-                Serial.println("Error timeout");
+                Serial.println("");
                 break;
 
           }
@@ -239,77 +267,68 @@ void applyJsonLogic() {
 
 void registerUserEntry(){
 
-        // Unlock the lock
-        digitalWrite(LOCK_PIN, 0);
+        if(!isDoorOpen){
 
-        // Serial printing
-        Serial.println("Estuadiante capturado: ");
-        Serial.print(nombreS);
+            digitalWrite(LOCK_PIN, 0);
 
-        // LCD screen configuration and manipulation
-        ////lcd.clear();
-        ////lcd.setCursor(5, 0);
-        ////lcd.print("Welcome,");
+            Serial.print("Welcome ");
+            Serial.print(nombreS);
+            Serial.println(", your entry has been registered.");
 
-        nombreLength = nombreS.length();
-        espaciosLibres = 20 - nombreLength;
-        espaciosIzquierda = espaciosLibres / 2;
+            digitalWrite(LOCK_PIN, 0);
 
-        ////lcd.setCursor(espaciosIzquierda, 1);
-        ////lcd.print(nombreS);
-        ////lcd.setCursor(2, 2);
-        ////lcd.print("has been registered");
-        ////lcd.setCursor(5, 3);
-        ////lcd.print("your entry.");
+            printCentered(0, "Bienvenido");
+            printCentered(1, nombreS);
 
-        // Sending HTTP headers
+            delay(2000);
+
+            printCentered(0, "Su entrada ha");
+            printCentered(1, "sido registrada.");
+        }
+        else{
+            digitalWrite(LOCK_PIN, 1);
+
+            Serial.print("Welcome ");
+            Serial.print(nombreS);
+            Serial.println(", your entry has been registered.");
+
+            digitalWrite(LOCK_PIN, 1);
+
+            printCentered(0, "Bienvenido");
+            printCentered(1, nombreS);
+
+            delay(2000);
+
+            printCentered(0, "Su entrada ha");
+            printCentered(1, "sido registrada.");
+        }
+
+        
         clienteServidor.println("HTTP/1.1 200 OK");
         clienteServidor.println("Content-type: text/html");
         clienteServidor.println();
 
-        // Sending a JSON message as response
         clienteServidor.print("{\"respuesta\":\"ok\",\"nombre\":\"");
         clienteServidor.print(nombreS);
         clienteServidor.println();
 
-        // Wait before continuing
         delay(8000);
-
-        // Lock the lock after a certain time
         digitalWrite(LOCK_PIN, 1);
 
-        // Clearing the LCD screen
-        ////lcd.clear();
-
-        // Restarting the ESP32
        // esp_restart();
     
 
 }
 void registerUserExit(){
 
-      //lcd.clear();
+      Serial.print(nombreS);
+      Serial.println(", your exit has been registered.");
       
-      Serial.println(nombreS);
-      
-       
-      //lcd.setCursor(0,0);
-      //lcd.print("Se ha registrado su");
-
-
-      //lcd.setCursor(6,1);
-      //lcd.print("salida");
-
-      nombreLength = nombreS.length();
-      espaciosLibres = 20 - nombreLength;
-      espaciosIzquierda = espaciosLibres / 2;
-                       
-      //lcd.setCursor(espaciosIzquierda,2);
-      //lcd.print(nombreS);
-                      
       digitalWrite(LOCK_PIN, 1);
 
-
+      printCentered(0, "Se ha registrado");
+      printCentered(1, "su salida");
+        
       clienteServidor.println("HTTP/1.1 200 OK");
       clienteServidor.println("Content-type:text/html");
       clienteServidor.println("\"}");
@@ -320,27 +339,14 @@ void registerUserExit(){
 
 
       delay(5000);
-      //lcd.clear();
-      
-
-      // REINICIO DE LA ESP32
           //esp_restart();
 
 
 }
 void noUserFoundAction(){
 
-      //lcd.clear();
-
-
-      //lcd.setCursor(5,0);
-      //lcd.print("Lo sentimos,");
-
-      //lcd.setCursor(1,1);
-      //lcd.print("no se ha encontrado");
-
-      //lcd.setCursor(4,2);
-      //lcd.print("su usuario.");
+      printCentered(0, "Usuario no");
+      printCentered(1, "encontrado");
 
 
       digitalWrite(LOCK_PIN, 1);
@@ -354,27 +360,15 @@ void noUserFoundAction(){
 
 
       Serial.println("Lo sentimos, no se ha encontrado su usuario en nuestra base de datos.");
-
-
       delay(5000);
-      //lcd.clear();
-
+      
 }
 void NoSufficientLevel(){
 
         digitalWrite(LOCK_PIN, 1);
 
-        //lcd.clear();
-
-
-        //lcd.setCursor(3, 0);
-        //lcd.print("Lo sentimos,");
-
-        //lcd.setCursor(2, 1);
-        //lcd.print("no tiene acceso");
-
-        //lcd.setCursor(4, 2);
-        //lcd.print("a esta aula.");
+        printCentered(0, "No tiene acceso");
+        printCentered(1, "a esta aula.");
 
         clienteServidor.println("HTTP/1.1 200 OK");
         clienteServidor.println("Content-type:text/html");
@@ -383,7 +377,7 @@ void NoSufficientLevel(){
         clienteServidor.println();
 
 
-        Serial.println("NO SE HA ENCONTRADO MATERIAL A ENTREGAR O RECIBIR.");
+        Serial.println("Lo sentimos, no tiene acceso a esta aula.");
 
 
         delay(5000);
@@ -392,10 +386,8 @@ void NoSufficientLevel(){
 }
 void accessDenied(){
 
-        //lcd.clear();
-
-        //lcd.setCursor(3, 1);
-        //lcd.print("Acceso denegado.");
+        printCentered(0, "Acceso");
+        printCentered(1, "denegado");
 
         clienteServidor.println("HTTP/1.1 200 OK");
         clienteServidor.println("Content-type:text/html");

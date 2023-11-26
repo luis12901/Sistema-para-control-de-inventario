@@ -14,7 +14,6 @@ void interfaceInit(){
 
     MFRC522 mfrc522(SS_PIN, RST_PIN);                                         
     mfrc522.PCD_Init();  
-
     lcd.begin();    
     lcd.backlight(); 
 

@@ -9,43 +9,60 @@
 
 
 // INACTIVITY TIMER
-  bool interaccionOcurre = false;
+  static unsigned long startTime;
+  bool interaccionOcurre = true;
+
+// OFFLINE TIMER
+  bool offlineInteraction = true;
+  unsigned long starOfLoop = 0;
+  unsigned long startTimeOffline = 0;
+
+// PIR CONTROL
+  int sensorValue = 0;
+  bool presence = true;
+  unsigned long initial;
+  unsigned long elapsedmillis;
+  int counter = 0;
+  
+
 //  WIFI AND SERVER
- /*
-  char ssid[100]     = "RFID_2.4";
+/*
+ char ssid[100]     = "RFID_2.4";
   char password[100] = "3333379426";
-  const char* serverIP = "http://192.168.43.197";
-  char* phpDirectory = "http://192.168.43.197/Laboratorio/consulta_estudiante.php";
-*/
+  const char* serverIP = "http://192.168.43.122";
+  char* phpDirectory = "http://192.168.43.122/Modular/alta_esp32.php";
+
+    char ssid[100]     = "TP-LINK_2.4GHz_684D79";
+  char password[100] = "80228240";
+  const char* serverIP = "http://192.168.2.102";
+  char* phpDirectory = "http://192.168.2.102/Modular/alta_esp32.php";*/
 
   char ssid[100]     = "Casa_Murillo_Salas_2.4Gnormal";
   char password[100] = "Guadalajara129#";
   const char* serverIP = "http://192.168.100.146";
   char* phpDirectory = "http://192.168.100.146/Laboratorio/busqueda_usuario.php";
 
-/*
-  char ssid[100]     = "UDGMovil1";
-  char password[100] = "";
-  const char* serverIP = "http://10.214.190.233";
-  char* phpDirectory = "http://10.214.190.233/Laboratorio/consulta_estudiante.php";
- /*
-
-  /*
-  char ssid[100]     = "INFINITUM8664_2.4";
-  char password[100] = "7231669603";
-  const char* serverIP = "http://192.168.1.124";
-  char* phpDirectory = "http://192.168.1.124/Laboratorio/consulta_estudiante.php";*/
 
 // Peripheral_pins
 
   #define SS_PIN 5
   #define RST_PIN 35
   #define BUZZER_PIN 13
-  #define LOCK_PIN 2
+  #define LOCK_PIN 32
   #define LCD 25
   #define RFID 26
-  #define deepSleepPin 27
+  #define deepSleepPin 34
+  #define ACTUATOR_PIN 26
+  #define PIR_PIN 25
+  #define DoorStatusPin 14
+
+  #define CONNECTED 14
+  #define DISCONNECTED 12
+  #define CARD_DETECTED 27
   
+
+
+
 
 // RFID CARD
   MFRC522 mfrc522(SS_PIN, RST_PIN);
@@ -73,8 +90,6 @@
 
 
   WiFiClient clienteServidor;
-
-  
 
 
 // LCD Variables
@@ -106,6 +121,5 @@
 
   LiquidCrystal_I2C lcd(0x27,10,4);
 
-// Infrared Motion
-  const int pirPin = 2; 
+
 

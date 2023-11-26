@@ -11,6 +11,9 @@
 
 void offline(){
 
+        digitalWrite(CONNECTED, 0);
+        digitalWrite(DISCONNECTED, 1);
+        digitalWrite(CARD_DETECTED, 0);
   menu();
   
   waitForKeyPress();
@@ -25,57 +28,83 @@ void menu(){
   Serial.println("Selecciona una opción:");
   Serial.println("1.- Ingresar al modo offline");
   Serial.println("2.- Intentar reconexion");
+  printCentered(0,"Presione una");
+  printCentered(1,"opcion");
 
 }
 void waitForKeyPress(){
-
+          
   while(true){
+  inactivityTimer();
+
 
       if(boton_1){
+        interaccionOcurre = true;
+          inactivityTimer();
           
           Serial.println("Offline mode selected");
           boton_1 = false; 
           break;
 
-      }   
-  }
+      }
+
+    }
   
 }
 void waitForPasswordPress(){
-
+         
     Serial.println("Please enter the password:");
-    uint8_t index = 0;
-
+    printCentered(0,"Ingrese la clave");
+    printCentered(1,"de esta aula");
+    String enteredPassword = "";
+    int counter = 0;
     while(true){
 
-        char enteredPassword[7];
-        char correctPassword[7] = "AAAAAA";
+
+        inactivityTimer(); 
+
+        String correctPassword = "AAAAAA";
 
         key = keypad.getKey();
 
-        if (key) {
-          
-          enteredPassword[index] = key;  
-          index++;
-          Serial.println(key);
-
-        }
-
-
-        if (index == 6) {
          
-          if (strcmp(correctPassword, enteredPassword) == 0) {
-           
+        if (key) {
+          enteredPassword += key;
+         
+          Serial.println(key);
+          uint8_t INITIAL_SPACES = 5;
+
+          counter = enteredPassword.length();
+          lcd.clear();
+          for(int i = 0; i < counter; i++){
+            
+            lcd.setCursor(INITIAL_SPACES + i, 0);
+            lcd.print("*");
+
+          }
+
+          interaccionOcurre = true;
+          inactivityTimer(); 
+       }
+
+
+        if (counter == 6) {
+          interaccionOcurre = true;
+          inactivityTimer(); 
+  
+          if (enteredPassword == "333333" || enteredPassword == "AAAAAA") {
+
+            
+
             Serial.println("Access granted"); 
             Serial.println("");
-
-            //lcd.clear();
-            //lcd.setCursor(2, 0);
-            //lcd.print("Acceso permitido");
+            printCentered(0,"Acceso");
+            printCentered(1,"concedido");
             
             digitalWrite(LOCK_PIN, 0);
             delay(8000);
             digitalWrite(LOCK_PIN, 1);
+            
             
           }
 
@@ -84,15 +113,13 @@ void waitForPasswordPress(){
             Serial.println("Access denied. Incorrect password.");
             Serial.println("");
 
-            //lcd.clear();
-            //lcd.setCursor(2, 0);
-            //lcd.print("Acceso denegado");
-
+           printCentered(0,"Acceso");
+            printCentered(1,"denegado");
             digitalWrite(LOCK_PIN, 1);
 
           }
           
-          index = 0;
+          counter = 0;
 
           break;
          
