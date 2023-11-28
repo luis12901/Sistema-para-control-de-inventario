@@ -25,8 +25,7 @@
   #include <ESPmDNS.h>
   #define LIMIT_SWT_PIN 33
 
-
-// prototypeFunctions();   // Use it only if the code doesn't compile for some missing prototype functions within the other ino files 
+bool OperationMode = false;
 
 
 
@@ -37,21 +36,23 @@ void setup() {
 }
 
 void loop() {
-
+    VerifyOperationMode();
+      
     inactivityTimer();
-    //pirTimer();
     if(onlineVerification()){
-        
-        online(); 
+
+        if(OperationMode){
+          GetUserCredentials(); 
+        }
+        else{
+          equipDeliveryMode();
+        }
   
     }
+
     else{
-
-        offline();
-
-    }
-
-    
+      Serial.println("We've lost connection");
+    } 
 }
 
 

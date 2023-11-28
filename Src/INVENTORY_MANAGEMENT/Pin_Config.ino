@@ -22,7 +22,7 @@ void pinConfig(){
   pinMode(CONNECTED, OUTPUT);
   pinMode(DISCONNECTED, OUTPUT);
   pinMode(CARD_DETECTED, OUTPUT);
-
+  pinMode(changeMode_Pin, INPUT_PULLDOWN);
 
 
   digitalWrite(LCD, LOW);

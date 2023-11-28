@@ -32,15 +32,23 @@
   const char* serverIP = "http://192.168.43.122";
   char* phpDirectory = "http://192.168.43.122/Modular/alta_esp32.php";
 
+char ssid[100]     = "Casa_Murillo_Salas_2.4Gnormal";
+  char password[100] = "Guadalajara129#";
+  const char* serverIP = "http://192.168.100.146";
+  char* phpDirectory = "http://192.168.100.146/Laboratorio/busqueda_usuario.php";
+
     char ssid[100]     = "TP-LINK_2.4GHz_684D79";
   char password[100] = "80228240";
   const char* serverIP = "http://192.168.2.102";
   char* phpDirectory = "http://192.168.2.102/Modular/alta_esp32.php";*/
 
-  char ssid[100]     = "Casa_Murillo_Salas_2.4Gnormal";
-  char password[100] = "Guadalajara129#";
-  const char* serverIP = "http://192.168.100.146";
-  char* phpDirectory = "http://192.168.100.146/Laboratorio/busqueda_usuario.php";
+  
+  char ssid[100]     = "INFINITUM8664_2.4";
+  char password[100] = "7231669603";
+  const char* serverIP = "http://192.168.1.64";
+  char* phpDirectory = "http://192.168.1.64/Laboratorio/busqueda_usuario.php";
+  char* phpDirectoryForEquipDelivery = "http://192.168.1.64/Laboratorio/equipment_delivery.php";
+
 
 
 // Peripheral_pins
@@ -54,15 +62,14 @@
   #define deepSleepPin 34
   #define ACTUATOR_PIN 26
   #define PIR_PIN 25
-  #define DoorStatusPin 14
+  #define DoorStatusPin 35
 
   #define CONNECTED 14
   #define DISCONNECTED 12
   #define CARD_DETECTED 27
+
+  #define changeMode_Pin 15
   
-
-
-
 
 // RFID CARD
   MFRC522 mfrc522(SS_PIN, RST_PIN);

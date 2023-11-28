@@ -10,13 +10,18 @@
 
 
 
-void online(){
+void GetUserCredentials(){
+Serial.println("Current Operation Mode: Get User Credentials");
 
   starOfLoop = 0;
   printCentered(0,"Coloque su");
   printCentered(1,"tarjeta");
   while(true){
 
+      VerifyOperationMode();
+      if(!OperationMode){
+          break;
+        }
 
       if (starOfLoop == 0) {
 
@@ -49,6 +54,50 @@ void online(){
   }
   
 
+  
+void equipDeliveryMode(){
+
+  Serial.println("Current Operation Mode: Equipment delivery");
+
+  starOfLoop = 0;
+  printCentered(0,"Coloque su");
+  printCentered(1,"tarjeta");
+  while(true){
+
+      VerifyOperationMode();
+      if(OperationMode){
+          break;
+        }
+
+      if (starOfLoop == 0) {
+
+            starOfLoop = millis();
+
+      }
+
+
+      getRFIDData();
+      
+
+      if(serialNumber.length() > 0){
+        interaccionOcurre = true;
+          inactivityTimer();
+
+            postJSONToServer_2();
+            getJSONFromServer();
+            
+            interaccionOcurre = true;
+            inactivityTimer();
+            break;
+      }
+
+      unsigned long currentTime = millis();
+
+      if (currentTime - startTime > 30000) {break;}
+
+  }
+  
+  }
   
 
 
@@ -125,13 +174,32 @@ void postJSONToServer(){
       conexionURL(counter, completedJsonMessage, phpDirectory, false);
 
 
-delay(2000);
+  
       digitalWrite(CONNECTED, 1);
-        digitalWrite(DISCONNECTED, 0);
-        digitalWrite(CARD_DETECTED, 0);
+      digitalWrite(DISCONNECTED, 0);
+      digitalWrite(CARD_DETECTED, 0);
         
 
 }
+
+
+void postJSONToServer_2(){
+      uint8_t counter = 0; 
+      jsonMessage = json1 + serialNumber + json2;
+      char completedJsonMessage[150];
+      jsonMessage.toCharArray(completedJsonMessage, 150);
+      conexionURL(counter, completedJsonMessage, phpDirectoryForEquipDelivery, false);
+
+
+  
+      digitalWrite(CONNECTED, 1);
+      digitalWrite(DISCONNECTED, 0);
+      digitalWrite(CARD_DETECTED, 0);
+        
+
+}
+
+
 void getJSONFromServer(){
 
     // Get all JSON message in currentLine global vaiable
