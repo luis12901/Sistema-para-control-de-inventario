@@ -26,21 +26,14 @@
   
 
 //  WIFI AND SERVER
+
+
+
 /*
- char ssid[100]     = "RFID_2.4";
-  char password[100] = "3333379426";
-  const char* serverIP = "http://192.168.43.122";
-  char* phpDirectory = "http://192.168.43.122/Modular/alta_esp32.php";
-
-char ssid[100]     = "Casa_Murillo_Salas_2.4Gnormal";
-  char password[100] = "Guadalajara129#";
-  const char* serverIP = "http://192.168.100.146";
-  char* phpDirectory = "http://192.168.100.146/Laboratorio/busqueda_usuario.php";
-
     char ssid[100]     = "TP-LINK_2.4GHz_684D79";
   char password[100] = "80228240";
   const char* serverIP = "http://192.168.2.102";
-  char* phpDirectory = "http://192.168.2.102/Modular/alta_esp32.php";*/
+  char* phpDirectory = "http://192.168.2.102/Modular/alta_esp32.php";
 
   
   char ssid[100]     = "INFINITUM8664_2.4";
@@ -49,6 +42,17 @@ char ssid[100]     = "Casa_Murillo_Salas_2.4Gnormal";
   char* phpDirectory = "http://192.168.1.64/Laboratorio/busqueda_usuario.php";
   char* phpDirectoryForEquipDelivery = "http://192.168.1.64/Laboratorio/equipment_delivery.php";
 
+
+  char ssid[100]     = "RFID_2.4";
+  char password[100] = "3333379426";
+  const char* serverIP = "http://192.168.43.122";
+  char* phpDirectory = "http://192.168.43.122/Modular/alta_esp32.php";
+*/
+  char ssid[100]     = "Casa_Murillo_Salas_2.4Gnormal";
+  char password[100] = "Guadalajara129#";
+  const char* serverIP = "http://192.168.100.146";
+  char* phpDirectory = "http://192.168.100.146/Laboratorio/user_search.php";
+  char* phpDirectoryForEquipDelivery = "http://192.168.100.146/Laboratorio/equipment_delivery.php";
 
 
 // Peripheral_pins

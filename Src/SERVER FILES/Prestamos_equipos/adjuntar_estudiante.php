@@ -15,7 +15,7 @@ if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);
 }
 
-$studentQuery = "SELECT id, nombre, codigo FROM formulario WHERE estado = ? ORDER BY ID DESC LIMIT 1";
+$studentQuery = "SELECT id, nombre, codigo FROM formulario WHERE estado = ? ORDER BY ID ASC LIMIT 1";
 $estado = "Disponible";
 $stmt = $conn->prepare($studentQuery);
 $stmt->bind_param("s", $estado);

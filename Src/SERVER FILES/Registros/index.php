@@ -146,7 +146,7 @@ if ($conexion->connect_error) {
 $nombre_usuario = isset($_GET['nombre_usuario']) ? $_GET['nombre_usuario'] : '';
 
 // Construir consulta SQL
-$sql = "SELECT ID, Nombre_Est, Codigo_Est, Nombre_Prest, Codigo_Prest,Equipos, Otros, FechayHora, Estado, Comentarios FROM registromaterial";
+$sql = "SELECT ID, Nombre_Est, Codigo_Est, Nombre_Prest, Codigo_Prest,Equipos, Otros, FechayHora, Estado, Comentarios FROM registromaterial ORDER BY ID DESC LIMIT 50";
 if ($nombre_usuario !== '') {
     $sql .= " WHERE Nombre_Est LIKE '%$nombre_usuario%' OR Codigo_Est LIKE '%$nombre_usuario%'";
 }
@@ -159,7 +159,7 @@ $result = $conexion->query($sql);
     // Imprimir datos de cada fila
     while ($row = $result->fetch_assoc()) {
         // Convertir epoch a formato legible con corrección de zona horaria (GMT-6)
-        $fechaHoraLegible = date('Y-m-d H:i:s', $row["FechayHora"] - 21600);
+        $fechaHoraLegible = date('Y-m-d H:i:s', $row["FechayHora"]);
 
         echo "<tr>";
         echo "<td>" . $row["ID"] . "</td>";

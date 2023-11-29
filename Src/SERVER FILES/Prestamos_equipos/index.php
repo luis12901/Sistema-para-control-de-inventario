@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="style.css" media="screen">
 </head>
 <body>
-
+<div id="notification" class="notification"></div>
 
 
 <div style="background-color: #4CAF50; padding: 20px; text-align: center; border-radius: 10px;">
