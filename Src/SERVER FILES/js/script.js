@@ -8,37 +8,26 @@
 
 
 
-    function showNotification(message, type) {
-        const notification = document.getElementById('notification');
-        notification.innerHTML = message;
-        notification.style.backgroundColor = type === 'success' ? '#4CAF50' : '#f44336';
-        notification.style.display = 'block';
 
-        // Ocultar la notificación después de 3 segundos (puedes ajustar este tiempo)
-        setTimeout(() => {
-            notification.style.display = 'none';
-        }, 3000);
-    }
-
- 
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
-            if (xhr.status == 200) {
-                const response = JSON.parse(xhr.responseText);
-                if (response.error) {
-                    showNotification(response.error, 'error');
-                } else if (response.message) {
-                    showNotification(response.message, 'success');
-                }
-            } else {
-                showNotification('Error en la solicitud.', 'error');
-            }
-        }
-    };
+function mostrarLeyenda() {
+  var codigoInput = document.getElementById('codigo_busqueda');
+  if (codigoInput.value === '') {
+    codigoInput.value = 'Escribe aquí...';
+  }
+}
 
 
+function ocultarLeyenda() {
+  var codigoInput = document.getElementById('codigo_busqueda');
+  if (codigoInput.value === 'Escribe aquí...') {
+    codigoInput.value = '';
+  }
+}
 
+function llenarCamposDelPrestador(nombre, codigo) {
+  document.getElementById('nombre_prestador').value = nombre;
+  document.getElementById('codigo_prestador').value = codigo;
+}
 
 function updateCampos(id) {
   const updatedOtros = document.getElementById(`otros-${id}`).innerText;
@@ -121,12 +110,6 @@ function buscarPrestador() {
 
   xhttp.open("GET", "adjuntar_estudiante.php", true);
   xhttp.send();
-}
-
-
-function llenarCamposDelPrestador(nombre, codigo) {
-  document.getElementById('nombre_prestador').value = nombre;
-  document.getElementById('codigo_prestador').value = codigo;
 }
 
 

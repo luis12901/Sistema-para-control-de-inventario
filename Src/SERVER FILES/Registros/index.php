@@ -64,6 +64,7 @@ table tr:hover {
         }
         .titulo-y-botones {
             display: inline-block;
+            font-family: Arial, sans-serif;
         }
         .boton {
             background-color: #4CAF50;
@@ -103,19 +104,23 @@ table tr:hover {
 <body>
 <div style="background-color: #4CAF50; padding: 20px; text-align: center; border-radius: 10px;">
     <div class="titulo-y-botones">
-        <h1 style="color: #fff;">Registro de inventario prestado</h1>
+        
+        <h1 style="color: #fff;">Registro de inventario en uso</h1>
         <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='../Prestamos_equipos/index.php'">Prestar Material</button>
 
         <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='../Alta_usuarios/index.php'">Alta Usuarios</button>
         <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='../Alta_inventario/index.php'">Alta Inventario</button>
         <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='../Usuarios_registrados/index.php'">Usuarios Registrados</button>
+        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Inventario/index.php'">Inventario</button>
     </div>
-    <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" class="boton" onclick="window.location.href='exportar_excel.php'">Exportar Excel</button>
+    
 
 
 
 
     <form style="padding: 10px 0 0 0;" method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+    <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" class="boton" onclick="window.location.href='exportar_excel.php'">Exportar Excel</button>
+    <br>
         <input type="text" name="nombre_usuario" placeholder="Buscar usuario...">
         <button type="submit">Buscar</button>
     </form>
@@ -123,6 +128,7 @@ table tr:hover {
 
 
 <div class="table-container">
+    <center>
 <?php
 /*
    Project: Laboratory Equipment Inventory Management
@@ -145,7 +151,6 @@ if ($conexion->connect_error) {
 
 $nombre_usuario = isset($_GET['nombre_usuario']) ? $_GET['nombre_usuario'] : '';
 
-// Construir consulta SQL
 $sql = "SELECT ID, Nombre_Est, Codigo_Est, Nombre_Prest, Codigo_Prest,Equipos, Otros, FechayHora, Estado, Comentarios FROM registromaterial ORDER BY ID DESC LIMIT 50";
 if ($nombre_usuario !== '') {
     $sql .= " WHERE Nombre_Est LIKE '%$nombre_usuario%' OR Codigo_Est LIKE '%$nombre_usuario%'";
@@ -186,7 +191,7 @@ $conexion->close();
 
 
 
-
+</center>
 </div>
 
 

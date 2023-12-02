@@ -67,7 +67,7 @@
 
 <div style="background-color: #4CAF50; padding: 20px; text-align: center; border-radius: 10px;">
     <div class="titulo-y-botones">
-        <h1 style="color: #fff;">Alta de Inventario</h1>
+        <h1 style="color: #fff;font-family: Arial, sans-serif;">Alta de Inventario</h1>
         
           <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Prestamos_equipos/index.php'">Prestar Material</button>
           <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Registros/index.php'">Ver Registros</button>
@@ -75,7 +75,8 @@
           <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px;
          cursor: pointer; margin: 0 10px; <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none;
           border-radius: 20px; cursor: pointer; margin: 0 10px; onclick="window.location.href='../Alta_usuarios/index.php'">Alta Usuarios</button>
-    </div>
+          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Inventario/index.php'">Inventario</button>
+        </div>
 
 </div>
 

@@ -33,6 +33,10 @@
             color: #4CAF50;
             margin-top: 20px;
         }
+        h2 {
+            color: #4CAF50;
+            margin-top: 20px;
+        }
 
         form {
             margin-bottom: 20px;
@@ -73,24 +77,26 @@
          cursor: pointer; margin: 0 10px; <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none;
           border-radius: 20px; cursor: pointer; margin: 0 10px; onclick="window.location.href='../Alta_usuarios/index.php'">Alta Usuarios</button>
           <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Alta_inventario/index.php'">Alta Inventario</button>
-
+          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Inventario/index.php'">Inventario</button>
     </div>
 </div>
 
 
 
-<h1>Mostrar Estudiantes</h1>
+<h1>Busqueda por codigo</h1>
 
 <!-- Formulario para buscar por código -->
 <form method="GET" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-    <label for="codigo">Buscar por Código:</label>
-    <input type="text" id="codigo" name="codigo">
-    <button type="submit">Buscar</button>
+   
+    <input style="width: 200px;" type="text" id="codigo" name="codigo" placeholder="Escriba el codigo a buscar">
+    <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" type="submit">Buscar</button>
 </form>
 
-<br>
+<br> 
+<center>
+    <h2>Ultimos 50 usuarios registrados</h2>
+</center>
 
-<a href="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>?mostrar_ultimos=true">Mostrar últimos 50 estudiantes registrados</a>
 <?php
 $servername = "localhost";
 $username = "root";
@@ -113,9 +119,9 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['codigo'])) {
     if ($result->num_rows > 0) {
         echo "<h2>Resultados de la búsqueda:</h2>";
         echo "<table>";
-        echo "<tr><th>Nombre</th><th>Código</th><th>Serial Number</th></tr>";
+        echo "<tr><th>Nombre</th><th>Código</th><th>Serial Number</th><th>Tipo de usuario</th></tr>";
         while ($row = $result->fetch_assoc()) {
-            echo "<tr><td>" . $row["Nombre"] . "</td><td>" . $row["Codigo"] . "</td><td>" . $row["serialNumber"] . "</td></tr>";
+            echo "<tr><td>" . $row["Nombre"] . "</td><td>" . $row["Codigo"] . "</td><td>" . $row["serialNumber"] . "</td><td>" . $row["Tipo_Usuario"] . "</td></tr>";
         }
         echo "</table>";
     } else {
@@ -123,14 +129,13 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['codigo'])) {
     }
 }
 
-// Lógica para mostrar últimos 30 estudiantes
-if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['mostrar_ultimos'])) {
-    $query = "SELECT * FROM usuarios ORDER BY id DESC LIMIT 50";
 
-    $result = $conexion->query($query);
 
-    if ($result->num_rows > 0) {
-        echo "<h2>Últimos 30 estudiantes registrados:</h2>";
+$query = "SELECT * FROM usuarios ORDER BY id DESC LIMIT 50";
+
+$result = $conexion->query($query);
+if ($result->num_rows > 0) {
+        echo "<br>";
         echo "<table>";
         echo "<tr><th>Nombre</th><th>Código</th><th>Serial Number</th><th>Tipo de usuario</th></tr>";
         while ($row = $result->fetch_assoc()) {
@@ -139,8 +144,8 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['mostrar_ultimos'])) {
         echo "</table>";
     } else {
         echo "No hay estudiantes registrados.";
-    }
 }
+
 
 $conexion->close();
 ?>

@@ -53,14 +53,14 @@
 
 <div style="background-color: #4CAF50; padding: 20px; text-align: center; border-radius: 10px;">
     <div class="titulo-y-botones">
-        <h1 style="color: #fff;">Alta de Usuarios</h1>
+        <h1 style="color: #fff; font-family: Arial, sans-serif;">Alta de Usuarios</h1>
         <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px;
          cursor: pointer; margin: 0 10px; <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none;
           border-radius: 20px; cursor: pointer; margin: 0 10px; onclick="window.location.href='../Prestamos_equipos/index.php'">Prestar Material</button>
           <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Registros/index.php'">Ver Registros</button>
           <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Alta_inventario/index.php'">Alta Inventario</button>
           <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Usuarios_registrados/index.php'">Usuarios Registrados</button>
-
+          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Inventario/index.php'">Inventario</button>
     </div>
 
 </div>
@@ -139,11 +139,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $serial = $_POST['serial'];
         $user_hierarchy = 'Estudiante';
 
-        $sql_insert = "INSERT INTO usuarios (nombre, codigo, serialNumber, Tipo_Usuario) VALUES ('$nombre', '$codigo', '$serial', '$user_hierarchy')";
-        if ($conexion->query($sql_insert) === TRUE) {
-            echo "<script>alert('Datos del estudiante insertados correctamente.')</script>";
-        } else {
-            echo "<script>alert('Error al insertar datos: " . $conexion->error . "')</script>";
+        $sqlCheckEstado = "SELECT codigo FROM usuarios WHERE Codigo = ?  AND Tipo_Usuario = 'Estudiante' LIMIT 1";
+        $stmtCheckEstado = $conexion->prepare($sqlCheckEstado);
+        $stmtCheckEstado->bind_param("s", $codigo);
+        $stmtCheckEstado->execute();
+        $resultCheckEstado = $stmtCheckEstado->get_result();
+
+        if ($resultCheckEstado->num_rows > 0) {
+
+            echo "<script>alert('Ya existe un usuario con este codigo.')</script>";
+
+        }
+        else{
+            
+           /*  Tras hacer la verificacion de que no hay usuario con ese codigo cy que es estudiante, verificamos que si hay un nombre asignado a este codigo en otro campo ya sea de maestro o pretador, que sea ek mismo que el que nos proporciona el usuario mediante el input del formulario */
+
+            $sql_insert = "INSERT INTO usuarios (nombre, codigo, serialNumber, Tipo_Usuario) VALUES ('$nombre', '$codigo', '$serial', '$user_hierarchy')";
+            if ($conexion->query($sql_insert) === TRUE) {
+                echo "<script>alert('Datos del estudiante insertados correctamente.')</script>";
+            } else {
+                echo "<script>alert('Error al insertar datos: " . $conexion->error . "')</script>";
+            }
         }
     }
 
@@ -153,11 +169,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $serial_maestro = $_POST['serial_maestro'];
         $user_hierarchy = 'Maestro';
 
-        $sql_insert_maestro = "INSERT INTO usuarios (nombre, codigo, serialNumber, Tipo_Usuario) VALUES ('$nombre_maestro', '$codigo_maestro', '$serial_maestro', '$user_hierarchy')";
-        if ($conexion->query($sql_insert_maestro) === TRUE) {
-            echo "<script>alert('Datos del profesor insertados correctamente.')</script>";
-        } else {
-            echo "<script>alert('Error al insertar datos: " . $conexion->error . "')</script>";
+
+        $sqlCheckEstado = "SELECT codigo FROM usuarios WHERE Codigo = ?  AND Tipo_Usuario = 'Maestro' LIMIT 1";
+        $stmtCheckEstado = $conexion->prepare($sqlCheckEstado);
+        $stmtCheckEstado->bind_param("s", $codigo_maestro);
+        $stmtCheckEstado->execute();
+        $resultCheckEstado = $stmtCheckEstado->get_result();
+
+        if ($resultCheckEstado->num_rows > 0) {
+
+            echo "<script>alert('Ya existe un usuario con este codigo.')</script>";
+
+        }
+        else{
+        
+            $sql_insert_maestro = "INSERT INTO usuarios (nombre, codigo, serialNumber, Tipo_Usuario) VALUES ('$nombre_maestro', '$codigo_maestro', '$serial_maestro', '$user_hierarchy')";
+            if ($conexion->query($sql_insert_maestro) === TRUE) {
+                echo "<script>alert('Datos del profesor insertados correctamente.')</script>";
+            } else {
+                echo "<script>alert('Error al insertar datos: " . $conexion->error . "')</script>";
+            }
         }
     }
 
@@ -167,11 +198,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $serial_prestador = $_POST['serial_prestador'];
         $user_hierarchy = 'Prestador SS';
 
-        $sql_insert_prestador = "INSERT INTO usuarios (nombre, codigo, serialNumber, Tipo_Usuario) VALUES ('$nombre_prestador', '$codigo_prestador', '$serial_prestador', '$user_hierarchy')";
-        if ($conexion->query($sql_insert_prestador) === TRUE) {
-            echo "<script>alert('Datos del prestador insertados correctamente.')</script>";
-        } else {
-            echo "<script>alert('Error al insertar datos: " . $conexion->error . "')</script>";
+        $sqlCheckEstado = "SELECT codigo FROM usuarios WHERE Codigo = ?  AND Tipo_Usuario = 'Prestador SS' LIMIT 1";
+        $stmtCheckEstado = $conexion->prepare($sqlCheckEstado);
+        $stmtCheckEstado->bind_param("s", $codigo_prestador);
+        $stmtCheckEstado->execute();
+        $resultCheckEstado = $stmtCheckEstado->get_result();
+
+        if ($resultCheckEstado->num_rows > 0) {
+
+            echo "<script>alert('Ya existe un usuario con este codigo.')</script>";
+
+        }
+        else{
+
+            $sql_insert_prestador = "INSERT INTO usuarios (nombre, codigo, serialNumber, Tipo_Usuario) VALUES ('$nombre_prestador', '$codigo_prestador', '$serial_prestador', '$user_hierarchy')";
+            if ($conexion->query($sql_insert_prestador) === TRUE) {
+                echo "<script>alert('Datos del prestador insertados correctamente.')</script>";
+            } else {
+                echo "<script>alert('Error al insertar datos: " . $conexion->error . "')</script>";
+            }
         }
     }
 }

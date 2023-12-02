@@ -20,7 +20,7 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $marcas[] = $row['Marca'];
     }
-    // Devolver las marcas como JSON
+   
     echo json_encode($marcas);
 } else {
     echo json_encode(array());
