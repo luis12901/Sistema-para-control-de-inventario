@@ -132,32 +132,36 @@ if ($conexion->connect_error) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Verificar qué formulario se envió y obtener los datos correspondientes
     if (isset($_POST['nombre'])) {
         $nombre = $_POST['nombre'];
         $codigo = $_POST['codigo'];
         $serial = $_POST['serial'];
         $user_hierarchy = 'Estudiante';
 
-        $sqlCheckEstado = "SELECT codigo FROM usuarios WHERE Codigo = ?  AND Tipo_Usuario = 'Estudiante' LIMIT 1";
+        $sqlCheckEstado = "SELECT codigo, Tipo_Usuario, Nombre FROM usuarios WHERE Codigo = ? LIMIT 1";
         $stmtCheckEstado = $conexion->prepare($sqlCheckEstado);
         $stmtCheckEstado->bind_param("s", $codigo);
         $stmtCheckEstado->execute();
         $resultCheckEstado = $stmtCheckEstado->get_result();
 
         if ($resultCheckEstado->num_rows > 0) {
+            // Obtener los datos del primer registro encontrado
+            $row = $resultCheckEstado->fetch_assoc();
+            $code_found = $row['codigo'];
+            $user_type = $row['Tipo_Usuario'];
+            $nombre_usuario = $row['Nombre'];
 
-            echo "<script>alert('Ya existe un usuario con este codigo.')</script>";
-
+            // Mostrar la información ordenada
+            echo "<script>alert('Ya existe un usuario con el código: $code_found, Tipo de Usuario: $user_type y Nombre: $nombre_usuario.')</script>";
         }
+
         else{
-            
-           /*  Tras hacer la verificacion de que no hay usuario con ese codigo cy que es estudiante, verificamos que si hay un nombre asignado a este codigo en otro campo ya sea de maestro o pretador, que sea ek mismo que el que nos proporciona el usuario mediante el input del formulario */
 
             $sql_insert = "INSERT INTO usuarios (nombre, codigo, serialNumber, Tipo_Usuario) VALUES ('$nombre', '$codigo', '$serial', '$user_hierarchy')";
             if ($conexion->query($sql_insert) === TRUE) {
                 echo "<script>alert('Datos del estudiante insertados correctamente.')</script>";
-            } else {
+            } 
+            else {
                 echo "<script>alert('Error al insertar datos: " . $conexion->error . "')</script>";
             }
         }
@@ -170,16 +174,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $user_hierarchy = 'Maestro';
 
 
-        $sqlCheckEstado = "SELECT codigo FROM usuarios WHERE Codigo = ?  AND Tipo_Usuario = 'Maestro' LIMIT 1";
+        $sqlCheckEstado = "SELECT codigo, Tipo_Usuario, Nombre FROM usuarios WHERE Codigo = ? LIMIT 1";
         $stmtCheckEstado = $conexion->prepare($sqlCheckEstado);
         $stmtCheckEstado->bind_param("s", $codigo_maestro);
         $stmtCheckEstado->execute();
         $resultCheckEstado = $stmtCheckEstado->get_result();
 
         if ($resultCheckEstado->num_rows > 0) {
+            $row = $resultCheckEstado->fetch_assoc();
+            $code_found = $row['codigo'];
+            $user_type = $row['Tipo_Usuario'];
+            $nombre_usuario = $row['Nombre'];
 
-            echo "<script>alert('Ya existe un usuario con este codigo.')</script>";
-
+            echo "<script>alert('Ya existe un usuario con el código: $code_found, Tipo de Usuario: $user_type y Nombre: $nombre_usuario.')</script>";
         }
         else{
         
@@ -198,16 +205,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $serial_prestador = $_POST['serial_prestador'];
         $user_hierarchy = 'Prestador SS';
 
-        $sqlCheckEstado = "SELECT codigo FROM usuarios WHERE Codigo = ?  AND Tipo_Usuario = 'Prestador SS' LIMIT 1";
+        $sqlCheckEstado = "SELECT codigo, Tipo_Usuario, Nombre FROM usuarios WHERE Codigo = ? LIMIT 1";
         $stmtCheckEstado = $conexion->prepare($sqlCheckEstado);
         $stmtCheckEstado->bind_param("s", $codigo_prestador);
         $stmtCheckEstado->execute();
         $resultCheckEstado = $stmtCheckEstado->get_result();
 
         if ($resultCheckEstado->num_rows > 0) {
+            $row = $resultCheckEstado->fetch_assoc();
+            $code_found = $row['codigo'];
+            $user_type = $row['Tipo_Usuario'];
+            $nombre_usuario = $row['Nombre'];
 
-            echo "<script>alert('Ya existe un usuario con este codigo.')</script>";
-
+            echo "<script>alert('Ya existe un usuario con el código: $code_found, Tipo de Usuario: $user_type y Nombre: $nombre_usuario.')</script>";
         }
         else{
 

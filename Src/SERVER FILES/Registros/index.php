@@ -113,90 +113,71 @@ table tr:hover {
         <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" onclick="window.location.href='../Usuarios_registrados/index.php'">Usuarios Registrados</button>
         <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Inventario/index.php'">Inventario</button>
     </div>
-    
 
-
-
-
-    <form style="padding: 10px 0 0 0;" method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-    <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" class="boton" onclick="window.location.href='exportar_excel.php'">Exportar Excel</button>
+    <form id="exportarExcelForm" style="padding: 10px 0 0 0;" method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+    <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" class="boton" onclick="exportarExcel()">Exportar Excel</button>
     <br>
-        <input type="text" name="nombre_usuario" placeholder="Buscar usuario...">
-        <button type="submit">Buscar</button>
-    </form>
-</div>
+    <input type="text" name="codigo_usuario" placeholder="Código de usuario ...">
+    <button type="submit">Buscar</button>
+</form>
 
+</div>
 
 <div class="table-container">
     <center>
-<?php
-/*
-   Project: Laboratory Equipment Inventory Management
-   Description: PHP script to insert data from a form into the 'registromaterial' table.
-   Author: Jose Luis Murillo Salas
-   Creation Date: August 20, 2023
-   Contact: joseluis.murillo2022@hotmail.com
-*/
+        <?php
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "laboratorio"; // Cambio en la base de datos
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "laboratorio"; // Cambio en la base de datos
+        $conexion = new mysqli($servername, $username, $password, $dbname);
 
-$conexion = new mysqli($servername, $username, $password, $dbname);
+        if ($conexion->connect_error) {
+            die("Error en la conexión a la base de datos: " . $conexion->connect_error);
+        }
 
-if ($conexion->connect_error) {
-    die("Error en la conexión a la base de datos: " . $conexion->connect_error);
-}
+        $codigo_usuario = isset($_GET['codigo_usuario']) ? $_GET['codigo_usuario'] : '';
 
-$nombre_usuario = isset($_GET['nombre_usuario']) ? $_GET['nombre_usuario'] : '';
+        $sql = "SELECT ID, Nombre_Est, Codigo_Est, Nombre_Prest, Codigo_Prest,Equipos, Otros, FechayHora, Estado, Comentarios FROM registromaterial";
+        if ($codigo_usuario !== '') {
+            $sql .= " WHERE Codigo_Est LIKE '%$codigo_usuario%'";
+        }
+        $sql .= " ORDER BY ID DESC LIMIT 50";
 
-$sql = "SELECT ID, Nombre_Est, Codigo_Est, Nombre_Prest, Codigo_Prest,Equipos, Otros, FechayHora, Estado, Comentarios FROM registromaterial ORDER BY ID DESC LIMIT 50";
-if ($nombre_usuario !== '') {
-    $sql .= " WHERE Nombre_Est LIKE '%$nombre_usuario%' OR Codigo_Est LIKE '%$nombre_usuario%'";
-}
+        $result = $conexion->query($sql);
 
-$result = $conexion->query($sql);
- // Verificar si se obtuvieron resultados
- if ($result->num_rows > 0) {
-    echo "<table>";
-    echo "<tr><th>ID</th><th>Nombre Estudiante</th><th>Código Estudiante</th><th>Nombre Prestador</th><th>Código Prestador</th><th>Equipos</th><th>Otros</th><th>Fecha y Hora</th><th>Estado</th><th>Comentarios</th><th>Actualizar</th></tr>";
-    // Imprimir datos de cada fila
-    while ($row = $result->fetch_assoc()) {
-        // Convertir epoch a formato legible con corrección de zona horaria (GMT-6)
-        $fechaHoraLegible = date('Y-m-d H:i:s', $row["FechayHora"]);
+        if ($result->num_rows > 0) {
+            echo "<table>";
+            echo "<tr><th>ID</th><th>Nombre Estudiante</th><th>Código Estudiante</th><th>Nombre Prestador</th><th>Código Prestador</th><th>Equipos</th><th>Otros</th><th>Fecha y Hora</th><th>Estado</th><th>Comentarios</th><th>Actualizar</th></tr>";
 
-        echo "<tr>";
-        echo "<td>" . $row["ID"] . "</td>";
-        echo "<td>" . $row["Nombre_Est"] . "</td>";
-        echo "<td>" . $row["Codigo_Est"] . "</td>";
-        echo "<td>" . $row["Nombre_Prest"] . "</td>";
-        echo "<td>" . $row["Codigo_Prest"] . "</td>";
-        echo "<td contenteditable='true' id='equipos-" . $row['ID'] . "'>" . $row["Equipos"] . "</td>";
-        echo "<td contenteditable='true' id='otros-" . $row['ID'] . "'>" . $row["Otros"] . "</td>";
-        echo "<td>" . $fechaHoraLegible . "</td>";
-        echo "<td>" . $row["Estado"] . "</td>";
-        echo "<td contenteditable='true' id='comentarios-" . $row['ID'] . "'>" . $row["Comentarios"] . "</td>";
-        echo "<td><button onclick='updateCampos(" . $row['ID'] . ")'>Actualizar Campos</button></td>";
-        echo "</tr>";
-    }
-    echo "</table>";
-} else {
-    echo "No se encontraron resultados";
-}
+            while ($row = $result->fetch_assoc()) {
+                $fechaHoraLegible = date('Y-m-d H:i:s', $row["FechayHora"]);
 
-// Cerrar conexión
-$conexion->close();
-?>
+                echo "<tr>";
+                echo "<td>" . $row["ID"] . "</td>";
+                echo "<td>" . $row["Nombre_Est"] . "</td>";
+                echo "<td>" . $row["Codigo_Est"] . "</td>";
+                echo "<td>" . $row["Nombre_Prest"] . "</td>";
+                echo "<td>" . $row["Codigo_Prest"] . "</td>";
+                echo "<td contenteditable='true' id='equipos-" . $row['ID'] . "'>" . $row["Equipos"] . "</td>";
+                echo "<td contenteditable='true' id='otros-" . $row['ID'] . "'>" . $row["Otros"] . "</td>";
+                echo "<td>" . $fechaHoraLegible . "</td>";
+                echo "<td>" . $row["Estado"] . "</td>";
+                echo "<td contenteditable='true' id='comentarios-" . $row['ID'] . "'>" . $row["Comentarios"] . "</td>";
+                echo "<td><button onclick='updateCampos(" . $row['ID'] . ")'>Actualizar Campos</button></td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+        } else {
+            echo "No se encontraron resultados";
+        }
 
-
-
-</center>
+        $conexion->close();
+        ?>
+    </center>
 </div>
 
-
-
 <script src="../js/script.js"></script>
-
 </body>
 </html>

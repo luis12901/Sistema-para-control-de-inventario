@@ -29,7 +29,6 @@ if ($result->num_rows > 0) {
         echo "{$row['ID']}\t{$row['Nombre_Est']}\t{$row['Codigo_Est']}\t{$row['Nombre_Prest']}\t{$row['Codigo_Prest']}\t{$row['Equipos']}\t{$row['Otros']}\t{$row['FechayHora']}\t{$row['Estado']}\t{$row['Comentarios']}\n";
     }
 
-    // Cerrar la conexión
     $conexion->close();
 } else {
     echo "No se encontraron resultados para la fecha de hoy: fecha actual -- $hoy";

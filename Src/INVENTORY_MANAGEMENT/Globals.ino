@@ -63,7 +63,7 @@
   #define LOCK_PIN 32
   #define LCD 25
   #define RFID 26
-  #define deepSleepPin 34
+  #define deepSleepPin 4 
   #define ACTUATOR_PIN 26
   #define PIR_PIN 25
   #define DoorStatusPin 35
@@ -72,7 +72,7 @@
   #define DISCONNECTED 12
   #define CARD_DETECTED 27
 
-  #define changeMode_Pin 15
+  #define changeMode_Pin 34
   
 
 // RFID CARD

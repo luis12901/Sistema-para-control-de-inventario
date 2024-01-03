@@ -18,10 +18,13 @@ Serial.println("Current Operation Mode: Get User Credentials");
   printCentered(1,"tarjeta");
   while(true){
 
-      VerifyOperationMode();
-      if(!OperationMode){
-          break;
-        }
+      if (digitalRead(changeMode_Pin) == HIGH) {
+        OperationMode = false; 
+        Serial.println("Operation mode changed !!!!");
+        delay(500);
+        break; 
+      }
+      
 
       if (starOfLoop == 0) {
 
@@ -64,10 +67,12 @@ void equipDeliveryMode(){
   printCentered(1,"tarjeta");
   while(true){
 
-      VerifyOperationMode();
-      if(OperationMode){
-          break;
-        }
+      if (digitalRead(changeMode_Pin) == HIGH) {
+        OperationMode = true; 
+        Serial.println("Operation mode changed !!!!");
+        delay(500);
+        break; 
+    }
 
       if (starOfLoop == 0) {
 
@@ -335,8 +340,7 @@ void applyJsonLogic() {
 
 void registerUserEntry(){
 
-        if(!isDoorOpen){
-
+   
             digitalWrite(LOCK_PIN, 0);
 
             Serial.print("Welcome ");
@@ -352,24 +356,7 @@ void registerUserEntry(){
 
             printCentered(0, "Su entrada ha");
             printCentered(1, "sido registrada.");
-        }
-        else{
-            digitalWrite(LOCK_PIN, 1);
-
-            Serial.print("Welcome ");
-            Serial.print(nombreS);
-            Serial.println(", your entry has been registered.");
-
-            digitalWrite(LOCK_PIN, 1);
-
-            printCentered(0, "Bienvenido");
-            printCentered(1, nombreS);
-
-            delay(2000);
-
-            printCentered(0, "Su entrada ha");
-            printCentered(1, "sido registrada.");
-        }
+        
 
         
         clienteServidor.println("HTTP/1.1 200 OK");

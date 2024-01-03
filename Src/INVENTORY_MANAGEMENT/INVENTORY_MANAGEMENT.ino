@@ -25,7 +25,7 @@
   #include <ESPmDNS.h>
   #define LIMIT_SWT_PIN 33
 
-bool OperationMode = false;
+bool OperationMode = true;
 
 
 
@@ -36,9 +36,8 @@ void setup() {
 }
 
 void loop() {
-    VerifyOperationMode();
       
-    inactivityTimer();
+    
     if(onlineVerification()){
 
         if(OperationMode){

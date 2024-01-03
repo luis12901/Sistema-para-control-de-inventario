@@ -8,7 +8,6 @@
 
 
 
-
 function mostrarLeyenda() {
   var codigoInput = document.getElementById('codigo_busqueda');
   if (codigoInput.value === '') {
@@ -28,27 +27,26 @@ function llenarCamposDelPrestador(nombre, codigo) {
   document.getElementById('nombre_prestador').value = nombre;
   document.getElementById('codigo_prestador').value = codigo;
 }
-
 function updateCampos(id) {
   const updatedOtros = document.getElementById(`otros-${id}`).innerText;
   const updatedEquipos = document.getElementById(`equipos-${id}`).innerText;
   const updatedComentarios = document.getElementById(`comentarios-${id}`).innerText;
 
+  // Obtener el valor seleccionado de la barra desplegable
+  const updatedEstado = document.getElementById(`estado-${id}`).value;
+
   const xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
-      if (xhr.readyState == 4) {
-          if (xhr.status == 200) {
-              console.log('Campos actualizados correctamente.');
-          } else {
-              console.error('Error al actualizar campos.');
-          }
-      }
+      // ... (Código existente)
   };
 
-  xhr.open("POST", "actualizar_campos.php", true);  // Reemplaza "actualizar_campos.php" con la URL correcta para actualizar en tu servidor
+  xhr.open("POST", "actualizar_campos.php", true);
   xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhr.send(`id=${id}&otros=${encodeURIComponent(updatedOtros)}&equipos=${encodeURIComponent(updatedEquipos)}&comentarios=${encodeURIComponent(updatedComentarios)}`);
+
+  // Incluir el valor de "Estado" en la solicitud POST
+  xhr.send(`id=${id}&otros=${encodeURIComponent(updatedOtros)}&equipos=${encodeURIComponent(updatedEquipos)}&comentarios=${encodeURIComponent(updatedComentarios)}&estado=${encodeURIComponent(updatedEstado)}`);
 }
+
 
 
 function exportarExcel() {

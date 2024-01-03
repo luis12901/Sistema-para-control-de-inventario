@@ -17,9 +17,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $otros = $_POST['otros'];
     $equipos = $_POST['equipos'];
     $comentarios = $_POST['comentarios'];
+    $estado = $_POST['estado'];
 
     // Actualizar campos en la base de datos
-    $sql = "UPDATE registromaterial SET Otros='$otros', Equipos='$equipos', Comentarios='$comentarios' WHERE ID=$id";
+    $sql = "UPDATE registromaterial SET Otros='$otros', Equipos='$equipos', Comentarios='$comentarios', Estado='$estado' WHERE ID=$id";
+
 
     if ($conn->query($sql) === TRUE) {
         echo "<script>alert('Campos actualizados correctamente.')</script>";
@@ -30,6 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     }
 }
+
 
 // Cerrar la conexión
 $conn->close();
