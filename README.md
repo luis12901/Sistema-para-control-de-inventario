@@ -52,10 +52,6 @@ The web interface is organized into subfolders within "SERVER FILES." Notable co
 - **CSS**: Holds stylesheets for the web interface.
 - **HTML**: Houses HTML files defining the structure of web pages.
 
-## Contributing
-
-Contributions to enhance and expand the functionality of this Inventory Management System are welcome. Please follow the guidelines in [CONTRIBUTING.md](CONTRIBUTING.md).
-
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
