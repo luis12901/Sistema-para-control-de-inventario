@@ -1,8 +1,13 @@
 /*
-   Project: RFID Access Control ()
-   Description: 
+   Project: Inventory Management 
+
+   Description: This code establishes a WiFi connection for an Inventory Management system and initializes a server. 
+   It also includes a function to check connectivity to a specified server using HTTP. 
+
    Author: Jose Luis Murillo Salas
+
    Creation Date: August 20, 2023
+   
    Contact: joseluis.murillo2022@hotmail.com
 */
 

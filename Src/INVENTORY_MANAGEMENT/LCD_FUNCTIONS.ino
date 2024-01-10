@@ -1,3 +1,17 @@
+/*
+   Project: Inventory Management 
+
+   Description: This function centers a given message on an LCD display with two rows. 
+   It checks if the message is too long for the display and prints an error message if necessary. 
+   The message is centered based on the specified row (0 or 1). If an invalid row is provided, it displays an error message on the LCD.
+
+   Author: Jose Luis Murillo Salas
+
+   Creation Date: August 20, 2023
+
+   Contact: joseluis.murillo2022@hotmail.com
+*/
+
 void printCentered(int row, String message) {
   int messageLength = message.length();
   int LCD_WIDTH = 16;

@@ -32,21 +32,18 @@ function updateCampos(id) {
   const updatedEquipos = document.getElementById(`equipos-${id}`).innerText;
   const updatedComentarios = document.getElementById(`comentarios-${id}`).innerText;
 
-  // Obtener el valor seleccionado de la barra desplegable
-  const updatedEstado = document.getElementById(`estado-${id}`).value;
-
   const xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
-      // ... (Código existente)
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        
+          console.log(xhr.responseText);
+      }
   };
 
   xhr.open("POST", "actualizar_campos.php", true);
   xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-  // Incluir el valor de "Estado" en la solicitud POST
-  xhr.send(`id=${id}&otros=${encodeURIComponent(updatedOtros)}&equipos=${encodeURIComponent(updatedEquipos)}&comentarios=${encodeURIComponent(updatedComentarios)}&estado=${encodeURIComponent(updatedEstado)}`);
+  xhr.send(`id=${id}&equipos=${encodeURIComponent(updatedEquipos)}&otros=${encodeURIComponent(updatedOtros)}&comentarios=${encodeURIComponent(updatedComentarios)}`);
 }
-
 
 
 function exportarExcel() {

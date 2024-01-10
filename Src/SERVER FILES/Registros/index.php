@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <meta charset="UTF-8">
     <title>Registro de inventario</title>
     <style>
@@ -114,6 +116,8 @@ table tr:hover {
         <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Inventario/index.php'">Inventario</button>
     </div>
 
+
+    
     <form id="exportarExcelForm" style="padding: 10px 0 0 0;" method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
     <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer;" class="boton" onclick="exportarExcel()">Exportar Excel</button>
     <br>
@@ -147,13 +151,15 @@ table tr:hover {
 
         $result = $conexion->query($sql);
 
+        
+        
         if ($result->num_rows > 0) {
             echo "<table>";
             echo "<tr><th>ID</th><th>Nombre Estudiante</th><th>Código Estudiante</th><th>Nombre Prestador</th><th>Código Prestador</th><th>Equipos</th><th>Otros</th><th>Fecha y Hora</th><th>Estado</th><th>Comentarios</th><th>Actualizar</th></tr>";
-
+    
             while ($row = $result->fetch_assoc()) {
                 $fechaHoraLegible = date('Y-m-d H:i:s', $row["FechayHora"]);
-
+    
                 echo "<tr>";
                 echo "<td>" . $row["ID"] . "</td>";
                 echo "<td>" . $row["Nombre_Est"] . "</td>";
@@ -169,7 +175,8 @@ table tr:hover {
                 echo "</tr>";
             }
             echo "</table>";
-        } else {
+        }
+        else {
             echo "No se encontraron resultados";
         }
 

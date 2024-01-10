@@ -33,14 +33,14 @@ $resultEstudiante = $stmtEstudiante->get_result();
 
 if ($resultEstudiante->num_rows > 0) {
     // Verificamos si el prestador de servicio social existe
-    $sqlPrestador = "SELECT * FROM usuarios WHERE codigo = ?";
+    $sqlPrestador = "SELECT * FROM usuarios WHERE codigo = ? AND Tipo_Usuario = 'Prestador SS'";
     $stmtPrestador = $conexion->prepare($sqlPrestador);
     $stmtPrestador->bind_param("s", $codigoPrestador);
     $stmtPrestador->execute();
     $resultPrestador = $stmtPrestador->get_result();
 
     if ($resultPrestador->num_rows > 0) {
-        // Verificamos el estado del último registro del estudiante
+
         $sqlCheckEstado = "SELECT Estado FROM registromaterial WHERE codigo_est = ? ORDER BY ID DESC LIMIT 1";
         $stmtCheckEstado = $conexion->prepare($sqlCheckEstado);
         $stmtCheckEstado->bind_param("s", $codigo);
@@ -58,20 +58,19 @@ if ($resultEstudiante->num_rows > 0) {
                 registerDelivery();
             }
         } else {
-            registerDelivery();
+            echo json_encode(array("Alerta" => "Ha habido un problema con la solicitud. (Error en el parametro *Estado*)."));
         }
     } else {
-        echo "Prestador de servicio social no encontrado.";
+        echo json_encode(array("Alerta" => "La informacion del prestador es incorrecta o no esta registrada en nuestra base de datos."));
     }
 } else {
-    echo "La información del estudiante es incorrecta o no está registrado en nuestra base de datos.";
+    echo "La informacion del estudiante es incorrecta o no esta registrada en nuestra base de datos.";
 }
 
 function registerDelivery()
 {
     global $conexion, $nombre, $codigo, $nombrePrestador, $codigoPrestador, $comentarios;
 
-    // El estudiante no tiene un equipo prestado, podemos insertar el registro
 
     $equipos = isset($_POST['Equipos']) ? $_POST['Equipos'] : [];
     $equiposStr = implode(',', $equipos);
@@ -79,8 +78,7 @@ function registerDelivery()
     
     
 
-    // Obtener la fecha actual en formato epoch
-    $fecha_epoch = time() - 21600; // 6 horas menos que el GMT
+    $fecha_epoch = time() - 21600; 
     $otros = isset($_POST['otros']) ? $_POST['otros'] : 'NA';
     $estado = 'Entregado';
 

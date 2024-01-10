@@ -1,58 +1,47 @@
 /*
-   Project: RFID Access Control (Online functions)
-   Description: This code controls an access system using RFID tags.
+   Project: Inventory Management 
+
+   Description: This code defines functions for various operations in an Inventory Management system. 
+   It includes functions for user credential retrieval, equipment delivery mode, online verification,
+   RFID data retrieval, and posting JSON data to a server. Additionally, there are auxiliary functions 
+   for LED blinking and connecting to a specified URL.
+
    Author: Jose Luis Murillo Salas
+
    Creation Date: August 20, 2023
+
    Contact: joseluis.murillo2022@hotmail.com
 */
 
 
-
-
-
 void GetUserCredentials(){
-Serial.println("Current Operation Mode: Get User Credentials");
+    Serial.println("Current Operation Mode: Get User Credentials");
 
-  starOfLoop = 0;
-  printCentered(0,"Coloque su");
-  printCentered(1,"tarjeta");
-  while(true){
+      printCentered(0,"Coloque su");
+      printCentered(1,"tarjeta");
+      while(true){
 
-      if (digitalRead(changeMode_Pin) == HIGH) {
-        OperationMode = false; 
-        Serial.println("Operation mode changed !!!!");
-        delay(500);
-        break; 
+          if (digitalRead(changeMode_Pin) == HIGH) {
+            OperationMode = false; 
+            Serial.println("Operation mode changed !!!!");
+            delay(500);
+            break; 
+          }
+        
+
+          getRFIDData();
+          
+
+          if(serialNumber.length() > 0){
+
+                postJSONToServer(User_Search_Directory);
+                serialNumber = "";
+                break;
+          }
+
+          
+
       }
-      
-
-      if (starOfLoop == 0) {
-
-            starOfLoop = millis();
-
-      }
-
-
-      getRFIDData();
-      
-
-      if(serialNumber.length() > 0){
-        interaccionOcurre = true;
-          inactivityTimer();
-
-            postJSONToServer();
-            getJSONFromServer();
-            
-            interaccionOcurre = true;
-            inactivityTimer();
-            break;
-      }
-
-      unsigned long currentTime = millis();
-
-      if (currentTime - startTime > 30000) {break;}
-
-  }
   
   }
   
@@ -62,7 +51,6 @@ void equipDeliveryMode(){
 
   Serial.println("Current Operation Mode: Equipment delivery");
 
-  starOfLoop = 0;
   printCentered(0,"Coloque su");
   printCentered(1,"tarjeta");
   while(true){
@@ -74,31 +62,20 @@ void equipDeliveryMode(){
         break; 
     }
 
-      if (starOfLoop == 0) {
-
-            starOfLoop = millis();
-
-      }
+      
 
 
       getRFIDData();
       
 
       if(serialNumber.length() > 0){
-        interaccionOcurre = true;
-          inactivityTimer();
 
-            postJSONToServer_2();
-            getJSONFromServer();
-            
-            interaccionOcurre = true;
-            inactivityTimer();
+            postJSONToServer(phpDirectoryForEquipDelivery);
+            serialNumber = "";
             break;
       }
 
-      unsigned long currentTime = millis();
-
-      if (currentTime - startTime > 30000) {break;}
+      
 
   }
   
@@ -118,12 +95,14 @@ bool onlineVerification(){
 
       }
       else{
-
+        digitalWrite(CONNECTED, 0);
+        digitalWrite(DISCONNECTED, 1);
+        digitalWrite(CARD_DETECTED, 0);
         Serial.println("Connection Error (Code: 002)");
         return false;
 
       }
-}
+  }
 void getRFIDData(){
 
   if (mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial()) {
@@ -169,25 +148,18 @@ void getRFIDData(){
 
   }
 
-}
+  }
 
-void postJSONToServer(){
+void postJSONToServer(char* php_directory){
       uint8_t counter = 0; 
       jsonMessage = json1 + serialNumber + json2;
       char completedJsonMessage[150];
       jsonMessage.toCharArray(completedJsonMessage, 150);
-      conexionURL(counter, completedJsonMessage, phpDirectory, false);
+      conexionURL(counter, completedJsonMessage, php_directory, false);      
 
+  }
 
-  
-      digitalWrite(CONNECTED, 1);
-      digitalWrite(DISCONNECTED, 0);
-      digitalWrite(CARD_DETECTED, 0);
-        
-
-}
-
-
+/*
 void postJSONToServer_2(){
       uint8_t counter = 0; 
       jsonMessage = json1 + serialNumber + json2;
@@ -203,256 +175,42 @@ void postJSONToServer_2(){
         
 
 }
+*/
 
+void parpadearLed() {
+  
+  digitalWrite(DISCONNECTED, 0);
+  digitalWrite(CARD_DETECTED, 0);
+  digitalWrite(CONNECTED, 1);
+  delay(100);
+  digitalWrite(CONNECTED, 0);
+  delay(100);
+  digitalWrite(CONNECTED, 1);
+  delay(100);
+  digitalWrite(CONNECTED, 0);
+  delay(100);
+  digitalWrite(CONNECTED, 1);
 
-void getJSONFromServer(){
-
-    // Get all JSON message in currentLine global vaiable
-
-    clienteServidor = servidor.available();
-    finMensaje = false;
-
-    if (clienteServidor) {
-          tiempoConexionInicio = xTaskGetTickCount();
-          while (clienteServidor.connected()){
-            if (clienteServidor.available() > 0) {
-              char c = clienteServidor.read();
-              
-              if (c == '}') {
-                finMensaje = true;
-              }
-              if (c == '\n') {
-                if (currentLine.length() == 0) {
-                 
-
-                } else {  
-                  currentLine = "";
-                }
-              } else if (c != '\r') { 
-                currentLine += c;     
-              }
-
-              
-              // Verify variable "finMensaje" is true that means "currentLine" has all JSON parameters 
-                        // if that's the case we deserialize all JSON data from "currentLine"
-             
-              if (finMensaje) {
-
-                String mensajeJSON = currentLine;
-                StaticJsonDocument<200> doc;
-                DeserializationError error = deserializeJson(doc, mensajeJSON);
-
-                if (error){
-
-                  Serial.print(F("deserializeJson() failed: "));
-                  Serial.println(error.f_str());
-
-                } 
-                else{
-                    
-                    
-                    // Save all JSON deserialized parameter in different variables
-                          uint8_t securityLevel = doc["acceso_nivel"];
-                          acceso_nivel = securityLevel;
-
-                          uint8_t accessType = doc["acceso"];
-                          acceso = accessType;
-
-                          uint8_t userFound = doc["estado"];
-                          estado = userFound;
-
-                          const char* clave = doc["clave"];
-                          const char* nombre = doc["nombre"];
-
-                          String claveJsonMsg(clave);
-                          claveS = claveJsonMsg;
-
-                          String userName(nombre);
-                          nombreS = userName; 
-
-
-                          applyJsonLogic();
-                    
-
-                }
-          }
-          else{
-            
-            // Server error, Couldn't save all the JSON Data
-
-          }
-
-          // JSON Message recieved
-          tiempoComparacion = xTaskGetTickCount();
-          if (tiempoComparacion > (tiempoConexionInicio + 1000)) {
-
-                Serial.println("");
-                break;
-
-          }
-       }
-    }
-    clienteServidor.stop();
   }
-  //  Clear all characters within serialNumber for the next time we read a new RFID Tag
-  serialNumber = "";
-}
-
-void applyJsonLogic() {
-        if (claveS == "1234"){    
-
-              // Add Meta data
-
-              if (estado == 1) {
-
-                    if (acceso_nivel == 1) {
-
-                          if (acceso == 1) {
-
-                                registerUserEntry();
-
-                          } 
-                          else {
-
-                                registerUserExit();
-
-                          }
-                    } 
-                    else {
-
-                      NoSufficientLevel();
-
-                    }
-              } 
-              else {
-
-                noUserFoundAction();
-
-              }
-
-        }
-        else {
-
-            accessDenied();
-
-        }
-}
-
-void registerUserEntry(){
-
-   
-            digitalWrite(LOCK_PIN, 0);
-
-            Serial.print("Welcome ");
-            Serial.print(nombreS);
-            Serial.println(", your entry has been registered.");
-
-            digitalWrite(LOCK_PIN, 0);
-
-            printCentered(0, "Bienvenido");
-            printCentered(1, nombreS);
-
-            delay(2000);
-
-            printCentered(0, "Su entrada ha");
-            printCentered(1, "sido registrada.");
-        
-
-        
-        clienteServidor.println("HTTP/1.1 200 OK");
-        clienteServidor.println("Content-type: text/html");
-        clienteServidor.println();
-
-        clienteServidor.print("{\"respuesta\":\"ok\",\"nombre\":\"");
-        clienteServidor.print(nombreS);
-        clienteServidor.println();
-
-        delay(8000);
-        digitalWrite(LOCK_PIN, 1);
-
-       // esp_restart();
-    
-
-}
-void registerUserExit(){
-
-      Serial.print(nombreS);
-      Serial.println(", your exit has been registered.");
-      
-      digitalWrite(LOCK_PIN, 1);
-
-      printCentered(0, "Se ha registrado");
-      printCentered(1, "su salida");
-        
-      clienteServidor.println("HTTP/1.1 200 OK");
-      clienteServidor.println("Content-type:text/html");
-      clienteServidor.println("\"}");
-      clienteServidor.println();
-      clienteServidor.print("{\"respuesta\":\"ok\",\"nombre\":\"");
-      clienteServidor.print(nombreS);
-      clienteServidor.println();
+void neg_parpadear_Led() {
+  
+  digitalWrite(CONNECTED, 0);
+  digitalWrite(CARD_DETECTED, 0);
+  digitalWrite(DISCONNECTED, 1);
+  delay(300);
+  digitalWrite(DISCONNECTED, 0);
+  delay(300);
+  digitalWrite(DISCONNECTED, 1);
+  delay(300);
+  digitalWrite(DISCONNECTED, 0);
+  delay(300);
+  digitalWrite(DISCONNECTED, 1);
+  digitalWrite(CONNECTED, 0);
+  digitalWrite(CARD_DETECTED, 0);
+  }
 
 
-      delay(5000);
-          //esp_restart();
 
-
-}
-void noUserFoundAction(){
-
-      printCentered(0, "Usuario no");
-      printCentered(1, "encontrado");
-
-
-      digitalWrite(LOCK_PIN, 1);
-
-
-      clienteServidor.println("HTTP/1.1 200 OK");
-      clienteServidor.println("Content-type:text/html");
-      clienteServidor.println();
-      clienteServidor.println("{\"Respuesta\":\"Coudln't found this user\"}");
-      clienteServidor.println();
-
-
-      Serial.println("Lo sentimos, no se ha encontrado su usuario en nuestra base de datos.");
-      delay(5000);
-      
-}
-void NoSufficientLevel(){
-
-        digitalWrite(LOCK_PIN, 1);
-
-        printCentered(0, "No tiene acceso");
-        printCentered(1, "a esta aula.");
-
-        clienteServidor.println("HTTP/1.1 200 OK");
-        clienteServidor.println("Content-type:text/html");
-        clienteServidor.println();
-        clienteServidor.println("{\"Respuesta\":\"User with no Sufficient Level\"}");
-        clienteServidor.println();
-
-
-        Serial.println("Lo sentimos, no tiene acceso a esta aula.");
-
-
-        delay(5000);
-        //lcd.clear();
-
-}
-void accessDenied(){
-
-        printCentered(0, "Acceso");
-        printCentered(1, "denegado");
-
-        clienteServidor.println("HTTP/1.1 200 OK");
-        clienteServidor.println("Content-type:text/html");
-        clienteServidor.println();
-        clienteServidor.println("{\"respuesta\":\"errorClave\"}");
-        clienteServidor.println();
-
-        Serial.println("Acceso denegado.");
-
-}
 void conexionURL(int counter, char* mensajeJSON, char* servidor, bool pruebas) {
   char temporal[50];
   char mensajeHTML[400];
@@ -493,6 +251,12 @@ void conexionURL(int counter, char* mensajeJSON, char* servidor, bool pruebas) {
     Serial.print("Codigo HTTP de respuesta: ");
     Serial.println(httpResponseCode);
     http.end();
+    if(httpResponseCode == 200){
+        parpadearLed();
+    }
+    else{
+      neg_parpadear_Led();
+    }
 
 
   } else {
@@ -504,4 +268,4 @@ void conexionURL(int counter, char* mensajeJSON, char* servidor, bool pruebas) {
     }
     Serial.println(" ");
   }
-}
+  }

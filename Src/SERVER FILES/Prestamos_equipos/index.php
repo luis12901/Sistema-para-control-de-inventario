@@ -5,24 +5,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulario de préstamo de equipos</title>
+  <link rel="icon" href="img/osciloscopio.png" type="image/png">
   <link rel="stylesheet" href="style.css" media="screen">
+  
 </head>
 <body>
 <div id="notification" class="notification"></div>
 
-
-<div style="background-color: #4CAF50; padding: 20px; text-align: center; border-radius: 10px;">
-  <h1 style="color: #fff;">Formulario de préstamo de equipos</h1>
+<div style="background-color: #4CAF50; padding: 20px; text-align: center; border-radius: 10px; display: flex; flex-direction: column; align-items: center;">
+    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+        <a href="../Main/index.html"><img src="img/home_icon.png" alt="Icono" style="width: 30px; height: 30px; margin-right: 10px;"></a>
+        <h1 style="color: #fff; margin: 0;">Formulario de préstamo de equipos</h1>
+    </div>
+    
     <div>
         <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Registros/index.php'">Ver Registros</button>
-        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px;
-         cursor: pointer; margin: 0 10px; <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none;
-          border-radius: 20px; cursor: pointer; margin: 0 10px; onclick="window.location.href='../Alta_usuarios/index.php'">Alta Usuarios</button>
-          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Alta_inventario/index.php'">Alta Inventario</button>
-          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Usuarios_registrados/index.php'">Usuarios Registrados</button>
-          <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Inventario/index.php'">Inventario</button>
+        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Alta_usuarios/index.php'">Alta Usuarios</button>
+        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Alta_inventario/index.php'">Alta Inventario</button>
+        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Usuarios_registrados/index.php'">Usuarios Registrados</button>
+        <button style="background-color: #45a049; color: white; padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; margin: 0 10px;" onclick="window.location.href='../Inventario/index.php'">Inventario</button>
     </div>
 </div>
+
+
 
 
 

@@ -1,8 +1,13 @@
 /*
-   Project: RFID Access Control ()
-   Description: 
+   Project: Inventory Management 
+
+   Description: This function initializes the interface components for an Inventory
+    Management system. It sets up serial communication, SPI, and initializes RFID (MFRC522) and LCD modules.
+
    Author: Jose Luis Murillo Salas
+
    Creation Date: August 20, 2023
+
    Contact: joseluis.murillo2022@hotmail.com
 */
 

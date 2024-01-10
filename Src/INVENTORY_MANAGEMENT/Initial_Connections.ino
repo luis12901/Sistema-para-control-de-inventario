@@ -1,11 +1,16 @@
 /*
-   Project: RFID Access Control ()
-   Description: 
+   Project: Inventory Management 
+
+   Description: This function initiates networking for an Inventory Management system. It first checks and establishes 
+   a WiFi connection, then verifies the server connection. If both connections succeed, it activates a buzzer, prints a success message on the LCD, and returns true. 
+   If there are connection errors, it activates the buzzer and prints an error message on the LCD before returning false.
+
    Author: Jose Luis Murillo Salas
+
    Creation Date: August 20, 2023
+
    Contact: joseluis.murillo2022@hotmail.com
 */
-
 bool beginNetworking(){
 
 

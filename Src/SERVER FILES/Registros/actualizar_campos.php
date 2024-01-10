@@ -4,10 +4,8 @@ $username = "root";
 $password = "";
 $dbname = "laboratorio";
 
-// Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Verificar la conexión
 if ($conn->connect_error) {
     die("Error en la conexión a la base de datos: " . $conn->connect_error);
 }
@@ -17,23 +15,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $otros = $_POST['otros'];
     $equipos = $_POST['equipos'];
     $comentarios = $_POST['comentarios'];
-    $estado = $_POST['estado'];
-
-    // Actualizar campos en la base de datos
-    $sql = "UPDATE registromaterial SET Otros='$otros', Equipos='$equipos', Comentarios='$comentarios', Estado='$estado' WHERE ID=$id";
-
+    
+    $sql = "UPDATE registromaterial SET Otros='$otros', Equipos='$equipos', Comentarios='$comentarios' WHERE ID=$id";
 
     if ($conn->query($sql) === TRUE) {
-        echo "<script>alert('Campos actualizados correctamente.')</script>";
-
         echo "Campos actualizados correctamente.";
     } else {
-        echo "<script>alert('Error al actualizar campos: " . $conexion->error . "')</script>";
-
+        echo "Error al actualizar campos: " . $conn->error;
     }
 }
 
-
-// Cerrar la conexión
 $conn->close();
 ?>

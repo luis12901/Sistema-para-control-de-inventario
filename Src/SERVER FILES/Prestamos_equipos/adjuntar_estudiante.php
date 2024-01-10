@@ -36,12 +36,18 @@ if ($studentResult->num_rows > 0) {
 
     echo json_encode($respuesta);
 
+    $deleteQuery = "DELETE FROM formulario WHERE id = ?";
+    $stmtDelete = $conn->prepare($deleteQuery);
+    $stmtDelete->bind_param("i", $studentID);
+    $stmtDelete->execute();
+
+    /*
     // Actualizar el estado del registro a "No disponible"
     $updateQuery = "UPDATE formulario SET estado = 'No disponible' WHERE id = ?";
     $stmtUpdate = $conn->prepare($updateQuery);
     $stmtUpdate->bind_param("i", $studentID);
     $stmtUpdate->execute();
-    
+    */
 } else {
     $respuesta = array(
         "encontrado" => false
